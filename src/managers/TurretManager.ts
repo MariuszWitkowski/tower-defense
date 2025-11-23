@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
-import Turret from '../entities/Turret';
-import Bullet from '../entities/Bullet';
+import Phaser from "phaser";
+import Turret from "../entities/Turret";
+import Bullet from "../entities/Bullet";
 
 export default class TurretManager {
   private scene: Phaser.Scene;
@@ -11,17 +11,17 @@ export default class TurretManager {
   constructor(scene: Phaser.Scene, enemies: Phaser.Physics.Arcade.Group) {
     this.scene = scene;
     this.enemies = enemies;
-    
+
     // 1. Create Turret Group
     this.turrets = this.scene.add.group({
       classType: Turret,
-      runChildUpdate: true
+      runChildUpdate: true,
     });
 
     // 2. Create Bullet Group
     this.bullets = this.scene.physics.add.group({
       classType: Bullet,
-      runChildUpdate: true
+      runChildUpdate: true,
     });
   }
 

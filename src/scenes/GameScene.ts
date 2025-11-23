@@ -1,11 +1,17 @@
-import Phaser from 'phaser';
-import GridManager from '../managers/GridManager';
-import WaveManager from '../managers/WaveManager';
-import TurretManager from '../managers/TurretManager';
-import UIManager from '../managers/UIManager';
-import { STARTING_MONEY, STARTING_LIVES, TURRET_COST, ENEMY_REWARD, BULLET_DAMAGE } from '../utils/Constants';
-import Bullet from '../entities/Bullet';
-import Enemy from '../entities/Enemy';
+import Phaser from "phaser";
+import GridManager from "../managers/GridManager";
+import WaveManager from "../managers/WaveManager";
+import TurretManager from "../managers/TurretManager";
+import UIManager from "../managers/UIManager";
+import {
+  STARTING_MONEY,
+  STARTING_LIVES,
+  TURRET_COST,
+  ENEMY_REWARD,
+  BULLET_DAMAGE,
+} from "../utils/Constants";
+import Bullet from "../entities/Bullet";
+import Enemy from "../entities/Enemy";
 
 export default class GameScene extends Phaser.Scene {
   // Managers
@@ -20,15 +26,25 @@ export default class GameScene extends Phaser.Scene {
 
   // Level Path
   private readonly levelPath = [
-    { x: 0, y: 2 }, { x: 1, y: 2 }, { x: 2, y: 2 }, 
-    { x: 2, y: 3 }, { x: 2, y: 4 }, 
-    { x: 3, y: 4 }, { x: 4, y: 4 }, { x: 5, y: 4 },
-    { x: 5, y: 3 }, { x: 5, y: 2 }, { x: 5, y: 1 },
-    { x: 6, y: 1 }, { x: 7, y: 1 }, { x: 8, y: 1 }, { x: 9, y: 1 }
+    { x: 0, y: 2 },
+    { x: 1, y: 2 },
+    { x: 2, y: 2 },
+    { x: 2, y: 3 },
+    { x: 2, y: 4 },
+    { x: 3, y: 4 },
+    { x: 4, y: 4 },
+    { x: 5, y: 4 },
+    { x: 5, y: 3 },
+    { x: 5, y: 2 },
+    { x: 5, y: 1 },
+    { x: 6, y: 1 },
+    { x: 7, y: 1 },
+    { x: 8, y: 1 },
+    { x: 9, y: 1 },
   ];
 
   constructor() {
-    super('GameScene');
+    super("GameScene");
   }
 
   create() {
@@ -43,14 +59,17 @@ export default class GameScene extends Phaser.Scene {
     this.waveManager = new WaveManager(this, this.gridManager, this.levelPath);
     this.waveManager.startWave();
 
-    this.turretManager = new TurretManager(this, this.waveManager.getEnemyGroup());
+    this.turretManager = new TurretManager(
+      this,
+      this.waveManager.getEnemyGroup(),
+    );
     this.gridManager.setTurretManager(this.turretManager);
 
     // 3. Collision Logic (Updated with Money Reward)
     this.physics.add.overlap(
       this.turretManager.getBulletGroup(),
       this.waveManager.getEnemyGroup(),
-      (bullet, enemy) => this.handleBulletHit(bullet as Bullet, enemy as Enemy)
+      (bullet, enemy) => this.handleBulletHit(bullet as Bullet, enemy as Enemy),
     );
   }
 
@@ -90,10 +109,11 @@ export default class GameScene extends Phaser.Scene {
   private handleBulletHit(bullet: Bullet, enemy: Enemy) {
     bullet.destroy();
     enemy.takeDamage(BULLET_DAMAGE);
-    
+
     // Check if enemy died to give money
-    if (!enemy.active) { // active is false if destroy() was called in takeDamage
-        this.earnMoney(ENEMY_REWARD);
+    if (!enemy.active) {
+      // active is false if destroy() was called in takeDamage
+      this.earnMoney(ENEMY_REWARD);
     }
   }
 }
