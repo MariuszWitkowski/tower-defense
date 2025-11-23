@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
 export default class UIManager {
   private scene: Phaser.Scene;
@@ -11,13 +11,20 @@ export default class UIManager {
   }
 
   private createUI() {
-    const style = { font: '20px Arial', color: '#ffffff', stroke: '#000000', strokeThickness: 2 };
+    const style = {
+      font: "20px Arial",
+      color: "#ffffff",
+      stroke: "#000000",
+      strokeThickness: 2,
+    };
 
     // Money Label (Top Left)
-    this.moneyText = this.scene.add.text(10, 10, 'Money: 0', style);
-    
+    this.moneyText = this.scene.add.text(10, 10, "Money: 0", style);
+
     // Lives Label (Top Right)
-    this.livesText = this.scene.add.text(790, 10, 'Lives: 0', style).setOrigin(1, 0);
+    this.livesText = this.scene.add
+      .text(790, 10, "Lives: 0", style)
+      .setOrigin(1, 0);
   }
 
   public updateMoney(amount: number) {

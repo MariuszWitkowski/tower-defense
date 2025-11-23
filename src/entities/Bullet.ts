@@ -1,9 +1,9 @@
-import Phaser from 'phaser';
-import { C_BULLET, BULLET_SPEED } from '../utils/Constants';
+import Phaser from "phaser";
+import { C_BULLET, BULLET_SPEED } from "../utils/Constants";
 
 export default class Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    const key = 'bulletTexture';
+    const key = "bulletTexture";
     if (!scene.textures.exists(key)) {
       const graphics = scene.make.graphics({ x: 0, y: 0, add: false });
       graphics.fillStyle(C_BULLET, 1);
@@ -20,7 +20,11 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setVisible(true);
 
     // Physics magic: velocity based on angle
-    this.scene.physics.velocityFromRotation(angle, BULLET_SPEED, this.body!.velocity);
+    this.scene.physics.velocityFromRotation(
+      angle,
+      BULLET_SPEED,
+      this.body!.velocity,
+    );
   }
 
   update(time: number, delta: number) {

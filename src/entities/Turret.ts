@@ -1,7 +1,12 @@
-import Phaser from 'phaser';
-import Enemy from './Enemy';
-import Bullet from './Bullet';
-import { C_TURRET, TILE_SIZE, TURRET_RANGE, FIRE_RATE } from '../utils/Constants';
+import Phaser from "phaser";
+import Enemy from "./Enemy";
+import Bullet from "./Bullet";
+import {
+  C_TURRET,
+  TILE_SIZE,
+  TURRET_RANGE,
+  FIRE_RATE,
+} from "../utils/Constants";
 
 export default class Turret extends Phaser.GameObjects.Sprite {
   private range: number = TURRET_RANGE;
@@ -9,10 +14,16 @@ export default class Turret extends Phaser.GameObjects.Sprite {
   private enemies: Phaser.Physics.Arcade.Group;
   private bullets: Phaser.Physics.Arcade.Group;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, enemies: Phaser.Physics.Arcade.Group, bullets: Phaser.Physics.Arcade.Group) {
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    enemies: Phaser.Physics.Arcade.Group,
+    bullets: Phaser.Physics.Arcade.Group,
+  ) {
     // ... (Keep existing texture generation code from Milestone 4) ...
-    const key = 'turretTexture'; 
-    
+    const key = "turretTexture";
+
     // Generate texture if it doesn't exist
     if (!scene.textures.exists(key)) {
       const graphics = scene.make.graphics({ x: 0, y: 0, add: false });
@@ -22,13 +33,13 @@ export default class Turret extends Phaser.GameObjects.Sprite {
       // Draw a little "barrel" indicating direction (visual only for now)
       graphics.fillStyle(0xffffff, 1);
       graphics.fillRect(TILE_SIZE / 2, TILE_SIZE / 2 - 5, TILE_SIZE * 0.4, 10);
-      
+
       graphics.generateTexture(key, TILE_SIZE, TILE_SIZE);
     }
 
     super(scene, x, y, key);
     scene.add.existing(this);
-    
+
     this.enemies = enemies;
     this.bullets = bullets;
   }
@@ -57,14 +68,19 @@ export default class Turret extends Phaser.GameObjects.Sprite {
 
     // Iterate through active enemies
     this.enemies.getChildren().forEach((child) => {
-        const enemy = child as Enemy;
-        if (enemy.active) {
-            const dist = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
-            if (dist < closestDistance) {
-                closestDistance = dist;
-                closestEnemy = enemy;
-            }
+      const enemy = child as Enemy;
+      if (enemy.active) {
+        const dist = Phaser.Math.Distance.Between(
+          this.x,
+          this.y,
+          enemy.x,
+          enemy.y,
+        );
+        if (dist < closestDistance) {
+          closestDistance = dist;
+          closestEnemy = enemy;
         }
+      }
     });
 
     return closestEnemy;
