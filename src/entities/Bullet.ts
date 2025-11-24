@@ -5,7 +5,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     const key = "bulletTexture";
     if (!scene.textures.exists(key)) {
-      const graphics = scene.make.graphics({ x: 0, y: 0, add: false });
+      const graphics = scene.make.graphics();
       graphics.fillStyle(C_BULLET, 1);
       graphics.fillCircle(4, 4, 4); // 8x8 yellow dot
       graphics.generateTexture(key, 8, 8);
@@ -27,7 +27,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-  update(time: number, delta: number) {
+  update(_time: number, _delta: number) {
     // Destroy if it goes off screen to save memory
     if (this.x < 0 || this.x > 800 || this.y < 0 || this.y > 600) {
       this.destroy();

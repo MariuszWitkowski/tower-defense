@@ -6,7 +6,6 @@ import UIManager from "../managers/UIManager";
 import {
   STARTING_MONEY,
   STARTING_LIVES,
-  TURRET_COST,
   ENEMY_REWARD,
   BULLET_DAMAGE,
 } from "../utils/Constants";

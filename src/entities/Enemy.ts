@@ -19,7 +19,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     // We need to create a texture on the fly for our "greybox" red square
     const key = "enemyTexture";
     if (!scene.textures.exists(key)) {
-      const graphics = scene.make.graphics({ x: 0, y: 0, add: false });
+      const graphics = scene.make.graphics();
       graphics.fillStyle(C_ENEMY, 1);
       // Make it slightly smaller than a full tile
       graphics.fillRect(0, 0, TILE_SIZE * 0.6, TILE_SIZE * 0.6);
@@ -51,7 +51,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   // This is called every frame by the GameScene update loop
-  update(time: number, delta: number) {
+  update(_time: number, _delta: number) {
     if (!this.active) return;
 
     const target = this.path[this.currentPointIndex];
