@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  // your config here
+  base: process.env.VITE_BASE_URL || "/",
 });
