@@ -106,7 +106,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   private handleBulletHit(bullet: Bullet, enemy: Enemy) {
-    bullet.destroy();
+    bullet.setActive(false);
+    bullet.setVisible(false);
     enemy.takeDamage(BULLET_DAMAGE);
 
     // Check if enemy died to give money

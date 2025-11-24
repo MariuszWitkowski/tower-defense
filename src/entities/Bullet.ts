@@ -12,6 +12,8 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     }
 
     super(scene, x, y, key);
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
   }
 
   public fire(x: number, y: number, angle: number) {
@@ -28,9 +30,10 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(_time: number, _delta: number) {
-    // Destroy if it goes off screen to save memory
+    // Deactivate if it goes off screen to allow for reuse
     if (this.x < 0 || this.x > 800 || this.y < 0 || this.y > 600) {
-      this.destroy();
+      this.setActive(false);
+      this.setVisible(false);
     }
   }
 }
