@@ -10,7 +10,6 @@ export default class WaveManager {
   private enemyGroup: Phaser.Physics.Arcade.Group;
   // The path converted from grid coords to world coords
   private worldPath: Phaser.Math.Vector2[] = [];
-  private spawnTimer?: Phaser.Time.TimerEvent;
 
   constructor(
     scene: Phaser.Scene,
@@ -44,7 +43,7 @@ export default class WaveManager {
     console.log("Wave Started!");
 
     // Create a repeating timer to spawn enemies
-    this.spawnTimer = this.scene.time.addEvent({
+    this.scene.time.addEvent({
       delay: SPAWN_DELAY,
       callback: this.spawnEnemy,
       callbackScope: this,

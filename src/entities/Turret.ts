@@ -26,7 +26,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
 
     // Generate texture if it doesn't exist
     if (!scene.textures.exists(key)) {
-      const graphics = scene.make.graphics({ x: 0, y: 0, add: false });
+      const graphics = scene.make.graphics();
       graphics.fillStyle(C_TURRET, 1);
       // Draw a circle for the turret
       graphics.fillCircle(TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE * 0.4);
@@ -44,7 +44,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
     this.bullets = bullets;
   }
 
-  update(time: number, delta: number) {
+  update(time: number, _delta: number) {
     // 1. Cooldown Check
     if (time < this.nextFire) return;
 
