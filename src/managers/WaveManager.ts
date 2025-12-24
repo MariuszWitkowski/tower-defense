@@ -1,28 +1,31 @@
 import Phaser from "phaser";
 import Enemy from "../entities/Enemy";
 import GridManager from "./GridManager";
-import { SPAWN_DELAY } from "../utils/Constants";
+import { WaveConfig } from "../configs/level-config";
 
 export default class WaveManager {
   private scene: Phaser.Scene;
   private gridManager: GridManager;
-  // We use a Phaser Group to manage all enemies efficiently
   private enemyGroup: Phaser.Physics.Arcade.Group;
-  // The path converted from grid coords to world coords
   private worldPath: Phaser.Math.Vector2[] = [];
+  private spawnTimer?: Phaser.Time.TimerEvent;
+  private enemiesToSpawn = 0;
+  private onWaveComplete: () => void;
+  private isWaveActive = false;
 
   constructor(
     scene: Phaser.Scene,
     gridManager: GridManager,
     gridPath: { x: number; y: number }[],
+    onWaveComplete: () => void,
   ) {
     this.scene = scene;
     this.gridManager = gridManager;
+    this.onWaveComplete = onWaveComplete;
 
-    // Initialize the physics group for enemies
     this.enemyGroup = this.scene.physics.add.group({
       classType: Enemy,
-      runChildUpdate: true, // Crucial: tells Phaser to run enemy.update() automatically
+      runChildUpdate: true,
     });
 
     this.convertGridPathToWorldPath(gridPath);
@@ -30,24 +33,23 @@ export default class WaveManager {
 
   private convertGridPathToWorldPath(gridPath: { x: number; y: number }[]) {
     this.worldPath = gridPath.map((coord) => {
-      // Get center point of the tile
       const worldPos = this.gridManager.getTileCenter(coord.x, coord.y);
-      // Convert to Vector2 for physics operations
       return new Phaser.Math.Vector2(worldPos.x, worldPos.y);
     });
   }
 
-  public startWave() {
+  public startWave(waveConfig: WaveConfig) {
     if (this.worldPath.length === 0) return;
 
-    console.log("Wave Started!");
+    console.log(`Wave Started with ${waveConfig.enemyCount} enemies.`);
+    this.enemiesToSpawn = waveConfig.enemyCount;
+    this.isWaveActive = true;
 
-    // Create a repeating timer to spawn enemies
-    this.scene.time.addEvent({
-      delay: SPAWN_DELAY,
+    this.spawnTimer = this.scene.time.addEvent({
+      delay: waveConfig.spawnDelay,
       callback: this.spawnEnemy,
       callbackScope: this,
-      loop: true,
+      repeat: this.enemiesToSpawn - 1,
     });
   }
 
@@ -71,5 +73,17 @@ export default class WaveManager {
 
   public getEnemyGroup() {
     return this.enemyGroup;
+  }
+
+  public update() {
+    if (
+      this.isWaveActive &&
+      this.spawnTimer?.getOverallProgress() === 1 &&
+      this.enemyGroup.countActive(true) === 0
+    ) {
+      console.log("Wave Complete!");
+      this.isWaveActive = false;
+      this.onWaveComplete();
+    }
   }
 }
