@@ -1,20 +1,30 @@
 import Phaser from "phaser";
 
 import type GameScene from "../scenes/GameScene";
-import { C_ENEMY, ENEMY_SPEED, TILE_SIZE } from "../utils/Constants";
+import {
+  C_ENEMY,
+  ENEMY_DEFENSE,
+  ENEMY_HEALTH,
+  ENEMY_SPEED,
+  TILE_SIZE,
+} from "../utils/Constants";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
   private path: Phaser.Math.Vector2[] = [];
   private currentPointIndex: number = 0;
   private moveSpeed: number = ENEMY_SPEED;
-
-  public health: number = 100;
+  public health: number = ENEMY_HEALTH;
+  public defense: number = ENEMY_DEFENSE;
+  public speed: number = ENEMY_SPEED;
 
   constructor(
     scene: Phaser.Scene,
     x: number,
     y: number,
     path: Phaser.Math.Vector2[],
+    health: number,
+    speed: number,
+    defense: number,
   ) {
     // We need to create a texture on the fly for our "greybox" red square
     const key = "enemyTexture";
@@ -32,6 +42,10 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     this.path = path;
     this.currentPointIndex = 0;
+    this.health = health;
+    this.speed = speed;
+    this.defense = defense;
+    this.moveSpeed = speed;
 
     // Start moving to the first point immediately
     this.moveToNextPoint();
@@ -78,7 +92,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   public takeDamage(amount: number) {
-    this.health -= amount;
+    const damageTaken = Math.max(1, amount - this.defense);
+    this.health -= damageTaken;
     if (this.health <= 0) {
       this.destroy();
     } else {

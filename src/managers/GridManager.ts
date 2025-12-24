@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import TurretManager from "./TurretManager"; // <--- Import this
+import UIManager from "./UIManager";
 import type GameScene from "../scenes/GameScene";
 import {
   TILE_SIZE,
@@ -15,6 +16,7 @@ import {
 export default class GridManager {
   private scene: Phaser.Scene;
   private turretManager?: TurretManager; // <--- Optional reference
+  private uiManager?: UIManager;
   private logicGrid: number[][] = [];
   private graphicsGrid: Phaser.GameObjects.Rectangle[][] = [];
 
@@ -29,6 +31,10 @@ export default class GridManager {
     this.turretManager = tm;
   }
 
+  public setUIManager(um: UIManager) {
+    this.uiManager = um;
+  }
+
   // ... (initializeGrid and drawGrid methods stay the same) ...
   // RE-PASTE initializeGrid and drawGrid from previous step if you are rewriting the file,
   // OR just ensure you only modify the handleTileClick below.
@@ -38,29 +44,40 @@ export default class GridManager {
 
   private handleTileClick(x: number, y: number) {
     const tileType = this.logicGrid[y][x];
-    // Cast the scene so we can access specific methods
     const gameScene = this.scene as GameScene;
+    const worldPos = this.getTileCenter(x, y);
 
-    if (tileType === 1) return; // Path
-    if (tileType === 2) return; // Existing Tower
+    if (tileType === 1) {
+      // Path - do nothing
+      this.uiManager?.hideTurretUI();
+      return;
+    }
 
+    if (tileType === 2) {
+      // Existing Tower - Show Upgrade UI
+      const existingTurret = this.turretManager?.getTurretAt(
+        worldPos.x,
+        worldPos.y,
+      );
+      if (existingTurret) {
+        this.uiManager?.showTurretUI(existingTurret);
+      }
+      return;
+    }
+
+    // Empty Tile - Try to build
     if (this.turretManager) {
-      // CHECK: Can we afford it?
       if (gameScene.canAfford(TURRET_COST)) {
-        const worldPos = this.getTileCenter(x, y);
         this.turretManager.placeTurret(worldPos.x, worldPos.y);
-
         this.logicGrid[y][x] = 2;
-
-        // DEDUCT MONEY
         gameScene.spendMoney(TURRET_COST);
-        console.log(`Built turret. Remaining: ${gameScene.canAfford(0)}`); // Just logging remaining money logic
+        this.uiManager?.hideTurretUI(); // Hide UI after building
       } else {
         console.log("Not enough cash!");
         // Optional: Add visual feedback like a red flash
         this.graphicsGrid[y][x].setFillStyle(0xff0000);
         this.scene.time.delayedCall(200, () => {
-          this.graphicsGrid[y][x].setFillStyle(0x222222); // Reset to default color
+          this.graphicsGrid[y][x].setFillStyle(C_TILE_DEFAULT);
         });
       }
     }

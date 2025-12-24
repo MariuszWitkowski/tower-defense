@@ -34,4 +34,26 @@ export default class TurretManager {
   public getBulletGroup() {
     return this.bullets;
   }
+
+  public getTurretAt(x: number, y: number): Turret | null {
+    let foundTurret: Turret | null = null;
+    this.turrets.getChildren().forEach((turretChild) => {
+      const turret = turretChild as Turret;
+      if (Phaser.Math.Distance.Between(turret.x, turret.y, x, y) < 1) {
+        foundTurret = turret;
+      }
+    });
+    return foundTurret;
+  }
+
+  public upgradeTurret(turret: Turret) {
+    turret.upgrade();
+    // Maybe add visual feedback for upgrade
+    const graphics = this.scene.add.graphics();
+    graphics.lineStyle(2, 0x00ff00, 1);
+    graphics.strokeCircle(turret.x, turret.y, turret.range);
+    this.scene.time.delayedCall(200, () => {
+      graphics.destroy();
+    });
+  }
 }

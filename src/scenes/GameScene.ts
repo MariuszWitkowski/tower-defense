@@ -7,10 +7,11 @@ import {
   STARTING_MONEY,
   STARTING_LIVES,
   ENEMY_REWARD,
-  BULLET_DAMAGE,
+  TURRET_UPGRADE_COST,
 } from "../utils/Constants";
 import Bullet from "../entities/Bullet";
 import Enemy from "../entities/Enemy";
+import Turret from "../entities/Turret";
 
 export default class GameScene extends Phaser.Scene {
   // Managers
@@ -63,6 +64,7 @@ export default class GameScene extends Phaser.Scene {
       this.waveManager.getEnemyGroup(),
     );
     this.gridManager.setTurretManager(this.turretManager);
+    this.gridManager.setUIManager(this.uiManager);
 
     // 3. Collision Logic (Updated with Money Reward)
     this.physics.add.overlap(
@@ -105,10 +107,20 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+  public upgradeTurret(turret: Turret) {
+    const cost = TURRET_UPGRADE_COST * turret.level;
+    if (this.canAfford(cost)) {
+      this.spendMoney(cost);
+      this.turretManager.upgradeTurret(turret);
+    } else {
+      console.log("Not enough money to upgrade!");
+    }
+  }
+
   private handleBulletHit(bullet: Bullet, enemy: Enemy) {
     bullet.setActive(false);
     bullet.setVisible(false);
-    enemy.takeDamage(BULLET_DAMAGE);
+    enemy.takeDamage(bullet.damage);
 
     // Check if enemy died to give money
     if (!enemy.active) {
