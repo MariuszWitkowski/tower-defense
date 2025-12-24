@@ -4,8 +4,10 @@ import "./style.css"; // Optional: For basic CSS resets
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO, // Tries WebGL first, falls back to Canvas
-  width: 800,
-  height: 600,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   parent: "app", // The ID of the HTML div where the game lives
   physics: {
     default: "arcade",
