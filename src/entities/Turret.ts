@@ -6,10 +6,14 @@ import {
   TILE_SIZE,
   TURRET_RANGE,
   FIRE_RATE,
+  BULLET_DAMAGE,
 } from "../utils/Constants";
 
 export default class Turret extends Phaser.GameObjects.Sprite {
-  private range: number = TURRET_RANGE;
+  public level = 1;
+  public damage = BULLET_DAMAGE;
+  public range = TURRET_RANGE;
+  public fireRate = FIRE_RATE;
   private nextFire: number = 0;
   private enemies: Phaser.Physics.Arcade.Group;
   private bullets: Phaser.Physics.Arcade.Group;
@@ -58,8 +62,15 @@ export default class Turret extends Phaser.GameObjects.Sprite {
 
       // 4. Fire!
       this.fireBullet(angle);
-      this.nextFire = time + FIRE_RATE;
+      this.nextFire = time + this.fireRate;
     }
+  }
+
+  public upgrade() {
+    this.level++;
+    this.damage += 15;
+    this.range += 20;
+    this.fireRate = Math.max(100, this.fireRate - 100);
   }
 
   private findNearestEnemy(): Enemy | null {
@@ -90,7 +101,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
     // Create bullet from the bullets group
     const bullet = this.bullets.get(this.x, this.y) as Bullet;
     if (bullet) {
-      bullet.fire(this.x, this.y, angle);
+      bullet.fire(this.x, this.y, angle, this.damage);
     }
   }
 }

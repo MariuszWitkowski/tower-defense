@@ -1,7 +1,12 @@
 import Phaser from "phaser";
 import Enemy from "../entities/Enemy";
 import GridManager from "./GridManager";
-import { SPAWN_DELAY } from "../utils/Constants";
+import {
+  ENEMY_DEFENSE,
+  ENEMY_HEALTH,
+  ENEMY_SPEED,
+  SPAWN_DELAY,
+} from "../utils/Constants";
 
 export default class WaveManager {
   private scene: Phaser.Scene;
@@ -10,6 +15,11 @@ export default class WaveManager {
   private enemyGroup: Phaser.Physics.Arcade.Group;
   // The path converted from grid coords to world coords
   private worldPath: Phaser.Math.Vector2[] = [];
+  private waveNumber = 1;
+  private enemiesPerWave = 10;
+  private enemiesSpawned = 0;
+  private spawnTimer?: Phaser.Time.TimerEvent;
+  private waveText!: Phaser.GameObjects.Text;
 
   constructor(
     scene: Phaser.Scene,
@@ -26,6 +36,22 @@ export default class WaveManager {
     });
 
     this.convertGridPathToWorldPath(gridPath);
+    this.createWaveUI();
+  }
+
+  private createWaveUI() {
+    this.waveText = this.scene.add.text(
+      this.scene.scale.width / 2,
+      20,
+      `Wave: ${this.waveNumber}`,
+      {
+        font: "24px Arial",
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 4,
+      },
+    );
+    this.waveText.setOrigin(0.5, 0);
   }
 
   private convertGridPathToWorldPath(gridPath: { x: number; y: number }[]) {
@@ -40,10 +66,12 @@ export default class WaveManager {
   public startWave() {
     if (this.worldPath.length === 0) return;
 
-    console.log("Wave Started!");
+    console.log(`Wave ${this.waveNumber} Started!`);
+    this.enemiesSpawned = 0;
+    this.waveText.setText(`Wave: ${this.waveNumber}`);
 
     // Create a repeating timer to spawn enemies
-    this.scene.time.addEvent({
+    this.spawnTimer = this.scene.time.addEvent({
       delay: SPAWN_DELAY,
       callback: this.spawnEnemy,
       callbackScope: this,
@@ -52,21 +80,40 @@ export default class WaveManager {
   }
 
   private spawnEnemy() {
-    if (this.worldPath.length === 0) return;
+    if (
+      this.worldPath.length === 0 ||
+      this.enemiesSpawned >= this.enemiesPerWave
+    ) {
+      this.spawnTimer?.remove();
+      // Start a timer for the next wave
+      this.scene.time.delayedCall(5000, this.nextWave, [], this);
+      return;
+    }
 
     const startPoint = this.worldPath[0];
 
-    // Create the enemy at the first point of the path
-    // Note: We don't need to manually add it to the scene,
-    // the Enemy constructor handles that.
+    // --- SCALING LOGIC ---
+    const health = ENEMY_HEALTH + this.waveNumber * 10;
+    const speed = ENEMY_SPEED + this.waveNumber * 2;
+    const defense = ENEMY_DEFENSE + this.waveNumber * 0.5;
+
     const enemy = new Enemy(
       this.scene,
       startPoint.x,
       startPoint.y,
       this.worldPath,
+      health,
+      speed,
+      defense,
     );
-    // Add to our tracking group
     this.enemyGroup.add(enemy);
+    this.enemiesSpawned++;
+  }
+
+  private nextWave() {
+    this.waveNumber++;
+    this.enemiesPerWave += 5; // Increase enemies for the next wave
+    this.startWave();
   }
 
   public getEnemyGroup() {
