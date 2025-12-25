@@ -35,6 +35,10 @@ export default class TurretManager {
     return this.bullets;
   }
 
+  public setEnemyGroup(enemies: Phaser.Physics.Arcade.Group) {
+    this.enemies = enemies;
+  }
+
   public getTurretAt(x: number, y: number): Turret | null {
     let foundTurret: Turret | null = null;
     this.turrets.getChildren().forEach((turretChild) => {
