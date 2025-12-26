@@ -68,7 +68,11 @@ export default class TurretManager {
     });
   }
 
-  public resetTurrets() {
+  public clearTurrets() {
     this.turrets.clear(true, true);
+    this.turrets = this.scene.add.group({
+      classType: Turret,
+      runChildUpdate: true,
+    });
   }
 }

@@ -81,7 +81,7 @@ export default class GameManager {
     const { level, actions } = useGameStore.getState();
     actions.setLevel(level + 1);
     actions.setWave(0);
-    this.turretManager.resetTurrets();
+    this.turretManager.clearTurrets();
     this.startLevel();
     this.uiManager.hideNewLevelButton();
   }
