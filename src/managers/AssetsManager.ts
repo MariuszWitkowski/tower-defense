@@ -1,11 +1,6 @@
 import Phaser from "phaser";
 import { injectable } from "tsyringe";
-import {
-  C_BULLET,
-  C_ENEMY,
-  C_TURRET,
-  TILE_SIZE,
-} from "../utils/Constants";
+import { C_BULLET, C_ENEMY, C_TURRET, TILE_SIZE } from "../utils/Constants";
 
 @injectable()
 export default class AssetsManager {

@@ -1,10 +1,6 @@
 import Phaser from "phaser";
 import GameManager from "../managers/GameManager";
-import {
-  ENEMY_DEFENSE,
-  ENEMY_HEALTH,
-  ENEMY_SPEED,
-} from "../utils/Constants";
+import { ENEMY_DEFENSE, ENEMY_HEALTH, ENEMY_SPEED } from "../utils/Constants";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
   private path: Phaser.Math.Vector2[] = [];

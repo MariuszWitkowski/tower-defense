@@ -17,6 +17,7 @@ export default class UIManager {
   private turretStatsText!: Phaser.GameObjects.Text;
   private upgradeButton!: Phaser.GameObjects.Text;
   private newLevelButton!: Phaser.GameObjects.Text;
+  private startLevelButton!: Phaser.GameObjects.Text;
   private selectedTurret: Turret | null = null;
   private selectedTurretType: TurretType = TurretType.QUICK;
   private quickTurretButton!: Phaser.GameObjects.Text;
@@ -24,19 +25,23 @@ export default class UIManager {
   private splashTurretButton!: Phaser.GameObjects.Text;
   private upgradeTurretCallback!: (turret: Turret) => void;
   private nextLevelCallback!: () => void;
+  private startLevelCallback!: () => void;
 
   public setScene(
     scene: Phaser.Scene,
     upgradeTurretCallback: (turret: Turret) => void,
     nextLevelCallback: () => void,
+    startLevelCallback: () => void,
   ) {
     this.scene = scene;
     this.upgradeTurretCallback = upgradeTurretCallback;
     this.nextLevelCallback = nextLevelCallback;
+    this.startLevelCallback = startLevelCallback;
     this.createUI();
     this.createTurretUI();
     this.createTurretSelectionUI();
     this.createNewLevelButton();
+    this.createStartLevelButton();
 
     useGameStore.subscribe((state) => {
       this.moneyText.setText(`Money: $${state.money}`);
@@ -147,12 +152,36 @@ export default class UIManager {
     this.newLevelButton.setVisible(false);
   }
 
+  private createStartLevelButton() {
+    this.startLevelButton = this.scene.add
+      .text(400, 300, "Start Level", {
+        font: "32px Arial",
+        color: "#00ff00",
+        backgroundColor: "#000000",
+        padding: { x: 20, y: 10 },
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.startLevelCallback();
+      });
+    this.startLevelButton.setVisible(false);
+  }
+
   public showNewLevelButton() {
     this.newLevelButton.setVisible(true);
   }
 
   public hideNewLevelButton() {
     this.newLevelButton.setVisible(false);
+  }
+
+  public showStartLevelButton() {
+    this.startLevelButton.setVisible(true);
+  }
+
+  public hideStartLevelButton() {
+    this.startLevelButton.setVisible(false);
   }
 
   private createTurretSelectionUI() {
