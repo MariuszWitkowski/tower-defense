@@ -19,7 +19,7 @@ export default class WaveManager {
 
   constructor(
     @inject("GridManager") private gridManager: GridManager,
-    @inject("GameManager") private gameManager: GameManager
+    @inject("GameManager") private gameManager: GameManager,
   ) {}
 
   public setScene(scene: Phaser.Scene) {
@@ -37,7 +37,11 @@ export default class WaveManager {
     });
   }
 
-  public startWave(waveConfig: WaveConfig, waveNumber: number, onWaveComplete: () => void) {
+  public startWave(
+    waveConfig: WaveConfig,
+    waveNumber: number,
+    onWaveComplete: () => void,
+  ) {
     if (this.worldPath.length === 0) return;
 
     this.waveNumber = waveNumber;
@@ -70,7 +74,7 @@ export default class WaveManager {
       health,
       speed,
       defense,
-      this.gameManager
+      this.gameManager,
     );
     this.enemyGroup.add(enemy);
   }
