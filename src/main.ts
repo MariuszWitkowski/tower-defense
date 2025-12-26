@@ -5,6 +5,8 @@ import "./style.css"; // Optional: For basic CSS resets
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO, // Tries WebGL first, falls back to Canvas
+  width: 800,
+  height: 600,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -21,4 +23,6 @@ const config: Phaser.Types.Core.GameConfig = {
   backgroundColor: "#2d2d2d", // Nice dark grey background
 };
 
-new Phaser.Game(config);
+window.onload = () => {
+  new Phaser.Game(config);
+};

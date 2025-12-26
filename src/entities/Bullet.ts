@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { C_BULLET, BULLET_SPEED, BULLET_DAMAGE } from "../utils/Constants";
+import { BULLET_SPEED, BULLET_DAMAGE } from "../utils/Constants";
 import { TurretType } from "../utils/TurretType";
 
 export default class Bullet extends Phaser.Physics.Arcade.Sprite {
@@ -7,15 +7,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
   public turretType!: TurretType;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    const key = "bulletTexture";
-    if (!scene.textures.exists(key)) {
-      const graphics = scene.make.graphics();
-      graphics.fillStyle(C_BULLET, 1);
-      graphics.fillCircle(4, 4, 4); // 8x8 yellow dot
-      graphics.generateTexture(key, 8, 8);
-    }
-
-    super(scene, x, y, key);
+    super(scene, x, y, "bulletTexture");
     scene.add.existing(this);
     scene.physics.add.existing(this);
   }

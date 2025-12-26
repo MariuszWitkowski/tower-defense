@@ -5,7 +5,9 @@ import TurretManager from "./managers/TurretManager";
 import WaveManager from "./managers/WaveManager";
 import UIManager from "./managers/UIManager";
 import GameManager from "./managers/GameManager";
+import AssetsManager from "./managers/AssetsManager";
 
+container.register("AssetsManager", { useClass: AssetsManager });
 container.register("GridManager", { useClass: GridManager });
 container.register("LevelManager", { useClass: LevelManager });
 container.register("TurretManager", { useClass: TurretManager });
