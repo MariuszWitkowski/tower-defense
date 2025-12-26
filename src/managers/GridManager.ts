@@ -22,7 +22,7 @@ export default class GridManager {
 
   constructor(
     @inject("TurretManager") private turretManager: TurretManager,
-    @inject("UIManager") private uiManager: UIManager
+    @inject("UIManager") private uiManager: UIManager,
   ) {}
 
   public setScene(scene: Phaser.Scene) {
@@ -41,7 +41,10 @@ export default class GridManager {
     }
 
     if (tileType === 2) {
-      const existingTurret = this.turretManager.getTurretAt(worldPos.x, worldPos.y);
+      const existingTurret = this.turretManager.getTurretAt(
+        worldPos.x,
+        worldPos.y,
+      );
       if (existingTurret) {
         this.uiManager.showTurretUI(existingTurret);
       }

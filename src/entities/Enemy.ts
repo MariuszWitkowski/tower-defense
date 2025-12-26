@@ -25,7 +25,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     health: number,
     speed: number,
     defense: number,
-    gameManager: GameManager
+    gameManager: GameManager,
   ) {
     const key = "enemyTexture";
     if (!scene.textures.exists(key)) {
@@ -69,7 +69,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.x,
       this.y,
       target.x,
-      target.y
+      target.y,
     );
 
     if (distance < 5) {

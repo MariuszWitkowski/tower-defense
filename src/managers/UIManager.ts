@@ -105,7 +105,7 @@ export default class UIManager {
     this.turretStatsText.setText(
       `Damage: ${this.selectedTurret.damage}\nRange: ${this.selectedTurret.range}\nRate: ${
         1000 / this.selectedTurret.fireRate
-      }/s`
+      }/s`,
     );
     const upgradeCost = TURRET_UPGRADE_COST * this.selectedTurret.level;
     this.upgradeButton.setText(`Upgrade ($${upgradeCost})`);

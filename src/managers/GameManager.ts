@@ -1,14 +1,14 @@
-import { injectable, inject } from 'tsyringe';
-import LevelManager from './LevelManager';
-import WaveManager from './WaveManager';
-import TurretManager from './TurretManager';
-import GridManager from './GridManager';
-import UIManager from './UIManager';
-import { useGameStore } from '../state/gameStore';
-import Bullet from '../entities/Bullet';
-import Enemy from '../entities/Enemy';
-import Turret from '../entities/Turret';
-import { ENEMY_REWARD, TURRET_UPGRADE_COST } from '../utils/Constants';
+import { injectable, inject } from "tsyringe";
+import LevelManager from "./LevelManager";
+import WaveManager from "./WaveManager";
+import TurretManager from "./TurretManager";
+import GridManager from "./GridManager";
+import UIManager from "./UIManager";
+import { useGameStore } from "../state/gameStore";
+import Bullet from "../entities/Bullet";
+import Enemy from "../entities/Enemy";
+import Turret from "../entities/Turret";
+import { ENEMY_REWARD, TURRET_UPGRADE_COST } from "../utils/Constants";
 
 @injectable()
 export default class GameManager {
@@ -19,7 +19,7 @@ export default class GameManager {
     @inject("WaveManager") public waveManager: WaveManager,
     @inject("TurretManager") public turretManager: TurretManager,
     @inject("GridManager") public gridManager: GridManager,
-    @inject("UIManager") public uiManager: UIManager
+    @inject("UIManager") public uiManager: UIManager,
   ) {}
 
   public setScene(scene: Phaser.Scene) {
@@ -57,7 +57,11 @@ export default class GameManager {
 
     if (waveConfig) {
       actions.setWave(wave + 1);
-      this.waveManager.startWave(waveConfig, wave + 1, this.onWaveComplete.bind(this));
+      this.waveManager.startWave(
+        waveConfig,
+        wave + 1,
+        this.onWaveComplete.bind(this),
+      );
     }
   }
 
@@ -78,7 +82,7 @@ export default class GameManager {
     this.scene.physics.add.overlap(
       this.turretManager.getBulletGroup(),
       this.waveManager.getEnemyGroup(),
-      (bullet, enemy) => this.handleBulletHit(bullet as Bullet, enemy as Enemy)
+      (bullet, enemy) => this.handleBulletHit(bullet as Bullet, enemy as Enemy),
     );
   }
 

@@ -1,5 +1,5 @@
-import create from 'zustand/vanilla';
-import { STARTING_LIVES, STARTING_MONEY } from '../utils/Constants';
+import create from "zustand/vanilla";
+import { STARTING_LIVES, STARTING_MONEY } from "../utils/Constants";
 
 interface GameState {
   money: number;
