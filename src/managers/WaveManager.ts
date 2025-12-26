@@ -1,52 +1,49 @@
 import Phaser from "phaser";
+import { injectable, inject } from "tsyringe";
 import Enemy from "../entities/Enemy";
 import GridManager from "./GridManager";
+import GameManager from "./GameManager";
 import { WaveConfig } from "../configs/level-config";
 import { ENEMY_DEFENSE, ENEMY_HEALTH, ENEMY_SPEED } from "../utils/Constants";
 
+@injectable()
 export default class WaveManager {
-  private scene: Phaser.Scene;
-  private gridManager: GridManager;
-  private enemyGroup: Phaser.Physics.Arcade.Group;
+  private scene!: Phaser.Scene;
+  private enemyGroup!: Phaser.Physics.Arcade.Group;
   private worldPath: Phaser.Math.Vector2[] = [];
   private spawnTimer?: Phaser.Time.TimerEvent;
   private enemiesToSpawn = 0;
-  private onWaveComplete: () => void;
+  private onWaveComplete!: () => void;
   private isWaveActive = false;
   private waveNumber = 1;
 
   constructor(
-    scene: Phaser.Scene,
-    gridManager: GridManager,
-    gridPath: { x: number; y: number }[],
-    onWaveComplete: () => void,
-  ) {
-    this.scene = scene;
-    this.gridManager = gridManager;
-    this.onWaveComplete = onWaveComplete;
+    @inject("GridManager") private gridManager: GridManager,
+    @inject("GameManager") private gameManager: GameManager
+  ) {}
 
+  public setScene(scene: Phaser.Scene) {
+    this.scene = scene;
     this.enemyGroup = this.scene.physics.add.group({
       classType: Enemy,
       runChildUpdate: true,
     });
-
-    this.convertGridPathToWorldPath(gridPath);
   }
 
-  private convertGridPathToWorldPath(gridPath: { x: number; y: number }[]) {
+  public convertGridPathToWorldPath(gridPath: { x: number; y: number }[]) {
     this.worldPath = gridPath.map((coord) => {
       const worldPos = this.gridManager.getTileCenter(coord.x, coord.y);
       return new Phaser.Math.Vector2(worldPos.x, worldPos.y);
     });
   }
 
-  public startWave(waveConfig: WaveConfig, waveNumber: number) {
+  public startWave(waveConfig: WaveConfig, waveNumber: number, onWaveComplete: () => void) {
     if (this.worldPath.length === 0) return;
 
     this.waveNumber = waveNumber;
-    console.log(`Wave Started with ${waveConfig.enemyCount} enemies.`);
     this.enemiesToSpawn = waveConfig.enemyCount;
     this.isWaveActive = true;
+    this.onWaveComplete = onWaveComplete;
 
     this.spawnTimer = this.scene.time.addEvent({
       delay: waveConfig.spawnDelay,
@@ -73,6 +70,7 @@ export default class WaveManager {
       health,
       speed,
       defense,
+      this.gameManager
     );
     this.enemyGroup.add(enemy);
   }
@@ -87,7 +85,6 @@ export default class WaveManager {
       this.spawnTimer?.getOverallProgress() === 1 &&
       this.enemyGroup.countActive(true) === 0
     ) {
-      console.log("Wave Complete!");
       this.isWaveActive = false;
       this.onWaveComplete();
     }

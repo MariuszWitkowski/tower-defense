@@ -1,7 +1,8 @@
 import Phaser from "phaser";
-import TurretManager from "./TurretManager"; // <--- Import this
+import { injectable, inject } from "tsyringe";
+import TurretManager from "./TurretManager";
 import UIManager from "./UIManager";
-import type GameScene from "../scenes/GameScene";
+import { useGameStore } from "../state/gameStore";
 import {
   TILE_SIZE,
   ROWS,
@@ -13,77 +14,55 @@ import {
   TURRET_COST,
 } from "../utils/Constants";
 
+@injectable()
 export default class GridManager {
-  private scene: Phaser.Scene;
-  private turretManager?: TurretManager; // <--- Optional reference
-  private uiManager?: UIManager;
+  private scene!: Phaser.Scene;
   private logicGrid: number[][] = [];
   private graphicsGrid: Phaser.GameObjects.Rectangle[][] = [];
 
-  constructor(scene: Phaser.Scene) {
+  constructor(
+    @inject("TurretManager") private turretManager: TurretManager,
+    @inject("UIManager") private uiManager: UIManager
+  ) {}
+
+  public setScene(scene: Phaser.Scene) {
     this.scene = scene;
     this.initializeGrid();
     this.drawGrid();
   }
 
-  // New method to link the systems
-  public setTurretManager(tm: TurretManager) {
-    this.turretManager = tm;
-  }
-
-  public setUIManager(um: UIManager) {
-    this.uiManager = um;
-  }
-
-  // ... (initializeGrid and drawGrid methods stay the same) ...
-  // RE-PASTE initializeGrid and drawGrid from previous step if you are rewriting the file,
-  // OR just ensure you only modify the handleTileClick below.
-
-  // Make sure you have the initializeGrid and drawGrid code from Milestone 2 here.
-  // I will just show the updated handleTileClick for brevity.
-
   private handleTileClick(x: number, y: number) {
     const tileType = this.logicGrid[y][x];
-    const gameScene = this.scene as GameScene;
     const worldPos = this.getTileCenter(x, y);
 
     if (tileType === 1) {
-      // Path - do nothing
-      this.uiManager?.hideTurretUI();
+      this.uiManager.hideTurretUI();
       return;
     }
 
     if (tileType === 2) {
-      // Existing Tower - Show Upgrade UI
-      const existingTurret = this.turretManager?.getTurretAt(
-        worldPos.x,
-        worldPos.y,
-      );
+      const existingTurret = this.turretManager.getTurretAt(worldPos.x, worldPos.y);
       if (existingTurret) {
-        this.uiManager?.showTurretUI(existingTurret);
+        this.uiManager.showTurretUI(existingTurret);
       }
       return;
     }
 
-    // Empty Tile - Try to build
-    if (this.turretManager) {
-      if (gameScene.canAfford(TURRET_COST)) {
-        this.turretManager.placeTurret(worldPos.x, worldPos.y);
-        this.logicGrid[y][x] = 2;
-        gameScene.spendMoney(TURRET_COST);
-        this.uiManager?.hideTurretUI(); // Hide UI after building
-      } else {
-        console.log("Not enough cash!");
-        // Optional: Add visual feedback like a red flash
-        this.graphicsGrid[y][x].setFillStyle(0xff0000);
-        this.scene.time.delayedCall(200, () => {
-          this.graphicsGrid[y][x].setFillStyle(C_TILE_DEFAULT);
-        });
-      }
+    const { money, actions } = useGameStore.getState();
+    if (money >= TURRET_COST) {
+      this.turretManager.placeTurret(worldPos.x, worldPos.y);
+      this.logicGrid[y][x] = 2;
+      actions.spendMoney(TURRET_COST);
+      this.uiManager.hideTurretUI();
+    } else {
+      console.log("Not enough cash!");
+      this.graphicsGrid[y][x].setFillStyle(0xff0000);
+      this.scene.time.delayedCall(200, () => {
+        this.graphicsGrid[y][x].setFillStyle(C_TILE_DEFAULT);
+      });
     }
   }
 
-  // Keep the Helper method
   public getTileCenter(col: number, row: number) {
     const startX = (this.scene.scale.width - COLS * TILE_SIZE) / 2;
     const startY = (this.scene.scale.height - ROWS * TILE_SIZE) / 2;
@@ -94,7 +73,6 @@ export default class GridManager {
     };
   }
 
-  // --- RE-ADD THESE IF YOU OVERWRITE THE FILE ---
   private initializeGrid() {
     for (let y = 0; y < ROWS; y++) {
       this.logicGrid[y] = [];
@@ -129,9 +107,7 @@ export default class GridManager {
           if (this.logicGrid[y][x] === 0) tile.setFillStyle(C_TILE_DEFAULT);
           else if (this.logicGrid[y][x] === 1) tile.setFillStyle(C_PATH);
         });
-        tile.on("pointerdown", () => {
-          this.handleTileClick(x, y);
-        });
+        tile.on("pointerdown", () => this.handleTileClick(x, y));
       }
     }
   }

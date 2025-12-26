@@ -1,24 +1,25 @@
 import Phaser from "phaser";
+import { injectable } from "tsyringe";
 import Turret from "../entities/Turret";
 import Bullet from "../entities/Bullet";
 
+@injectable()
 export default class TurretManager {
-  private scene: Phaser.Scene;
+  private scene!: Phaser.Scene;
   private turrets: Phaser.GameObjects.Group;
-  private enemies: Phaser.Physics.Arcade.Group;
+  private enemies!: Phaser.Physics.Arcade.Group;
   private bullets: Phaser.Physics.Arcade.Group;
 
-  constructor(scene: Phaser.Scene, enemies: Phaser.Physics.Arcade.Group) {
-    this.scene = scene;
-    this.enemies = enemies;
+  constructor() {
+    // Groups will be initialized in setScene
+  }
 
-    // 1. Create Turret Group
+  public setScene(scene: Phaser.Scene) {
+    this.scene = scene;
     this.turrets = this.scene.add.group({
       classType: Turret,
       runChildUpdate: true,
     });
-
-    // 2. Create Bullet Group
     this.bullets = this.scene.physics.add.group({
       classType: Bullet,
       runChildUpdate: true,
@@ -26,7 +27,6 @@ export default class TurretManager {
   }
 
   public placeTurret(x: number, y: number) {
-    // Pass enemies and bullets to the new turret
     const turret = new Turret(this.scene, x, y, this.enemies, this.bullets);
     this.turrets.add(turret);
   }
@@ -52,7 +52,6 @@ export default class TurretManager {
 
   public upgradeTurret(turret: Turret) {
     turret.upgrade();
-    // Maybe add visual feedback for upgrade
     const graphics = this.scene.add.graphics();
     graphics.lineStyle(2, 0x00ff00, 1);
     graphics.strokeCircle(turret.x, turret.y, turret.range);

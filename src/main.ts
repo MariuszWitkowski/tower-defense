@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import Phaser from "phaser";
 import GameScene from "./scenes/GameScene";
 import "./style.css"; // Optional: For basic CSS resets

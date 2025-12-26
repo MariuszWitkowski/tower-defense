@@ -1,5 +1,7 @@
+import { injectable } from "tsyringe";
 import { LEVELS, LevelConfig } from "../configs/level-config";
 
+@injectable()
 export default class LevelManager {
   private levels: LevelConfig[];
 

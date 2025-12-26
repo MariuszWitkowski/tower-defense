@@ -1,10 +1,13 @@
 import Phaser from "phaser";
 import Turret from "../entities/Turret";
 import { TURRET_UPGRADE_COST } from "../utils/Constants";
-import GameScene from "../scenes/GameScene";
+import { useGameStore } from "../state/gameStore";
+import { injectable } from "tsyringe";
+import GameManager from "./GameManager";
 
+@injectable()
 export default class UIManager {
-  private scene: GameScene;
+  private scene!: Phaser.Scene;
   private moneyText!: Phaser.GameObjects.Text;
   private livesText!: Phaser.GameObjects.Text;
   private levelText!: Phaser.GameObjects.Text;
@@ -14,11 +17,20 @@ export default class UIManager {
   private turretStatsText!: Phaser.GameObjects.Text;
   private upgradeButton!: Phaser.GameObjects.Text;
   private selectedTurret: Turret | null = null;
+  private gameManager!: GameManager;
 
-  constructor(scene: GameScene) {
+  public setScene(scene: Phaser.Scene, gameManager: GameManager) {
     this.scene = scene;
+    this.gameManager = gameManager;
     this.createUI();
     this.createTurretUI();
+
+    useGameStore.subscribe((state) => {
+      this.moneyText.setText(`Money: $${state.money}`);
+      this.livesText.setText(`Lives: ${state.lives}`);
+      this.levelText.setText(`Level: ${state.level}`);
+      this.waveText.setText(`Wave: ${state.wave}`);
+    });
   }
 
   private createUI() {
@@ -29,33 +41,15 @@ export default class UIManager {
       strokeThickness: 2,
     };
 
-    // Top Left UI
     this.moneyText = this.scene.add.text(10, 10, "Money: 0", style);
     this.levelText = this.scene.add.text(10, 40, "Level: 1", style);
 
-    // Top Right UI
     this.livesText = this.scene.add
       .text(790, 10, "Lives: 0", style)
       .setOrigin(1, 0);
     this.waveText = this.scene.add
       .text(790, 40, "Wave: 1", style)
       .setOrigin(1, 0);
-  }
-
-  public updateMoney(amount: number) {
-    this.moneyText.setText(`Money: $${amount}`);
-  }
-
-  public updateLives(amount: number) {
-    this.livesText.setText(`Lives: ${amount}`);
-  }
-
-  public updateLevel(level: number) {
-    this.levelText.setText(`Level: ${level}`);
-  }
-
-  public updateWave(wave: number, totalWaves: number) {
-    this.waveText.setText(`Wave: ${wave} / ${totalWaves}`);
   }
 
   private createTurretUI() {
@@ -81,8 +75,8 @@ export default class UIManager {
       .setInteractive()
       .on("pointerdown", () => {
         if (this.selectedTurret) {
-          this.scene.upgradeTurret(this.selectedTurret);
-          this.updateTurretUI(); // Refresh stats after upgrade
+          this.gameManager.upgradeTurret(this.selectedTurret);
+          this.updateTurretUI();
         }
       });
 
@@ -111,13 +105,13 @@ export default class UIManager {
     this.turretStatsText.setText(
       `Damage: ${this.selectedTurret.damage}\nRange: ${this.selectedTurret.range}\nRate: ${
         1000 / this.selectedTurret.fireRate
-      }/s`,
+      }/s`
     );
     const upgradeCost = TURRET_UPGRADE_COST * this.selectedTurret.level;
     this.upgradeButton.setText(`Upgrade ($${upgradeCost})`);
 
-    // Disable button if too expensive
-    if (!this.scene.canAfford(upgradeCost)) {
+    const { money } = useGameStore.getState();
+    if (money < upgradeCost) {
       this.upgradeButton.setColor("#ff0000").disableInteractive();
     } else {
       this.upgradeButton.setColor("#00ff00").setInteractive();
