@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Enemy from "./Enemy";
 import Bullet from "./Bullet";
+import { TurretType } from "../utils/TurretType";
 import {
   C_TURRET,
   TILE_SIZE,
@@ -14,6 +15,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
   public damage = BULLET_DAMAGE;
   public range = TURRET_RANGE;
   public fireRate = FIRE_RATE;
+  public turretType: TurretType;
   private nextFire: number = 0;
   private enemies: Phaser.Physics.Arcade.Group;
   private bullets: Phaser.Physics.Arcade.Group;
@@ -24,6 +26,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
     y: number,
     enemies: Phaser.Physics.Arcade.Group,
     bullets: Phaser.Physics.Arcade.Group,
+    turretType: TurretType,
   ) {
     // ... (Keep existing texture generation code from Milestone 4) ...
     const key = "turretTexture";
@@ -46,6 +49,22 @@ export default class Turret extends Phaser.GameObjects.Sprite {
 
     this.enemies = enemies;
     this.bullets = bullets;
+    this.turretType = turretType;
+
+    switch (this.turretType) {
+      case TurretType.QUICK:
+        this.damage = BULLET_DAMAGE * 0.7;
+        this.fireRate = FIRE_RATE / 2;
+        break;
+      case TurretType.HEAVY:
+        this.damage = BULLET_DAMAGE * 2;
+        this.fireRate = FIRE_RATE * 2;
+        break;
+      case TurretType.SPLASH:
+        this.damage = BULLET_DAMAGE * 0.9;
+        this.range = TURRET_RANGE * 0.8;
+        break;
+    }
   }
 
   update(time: number, _delta: number) {
@@ -101,7 +120,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
     // Create bullet from the bullets group
     const bullet = this.bullets.get(this.x, this.y) as Bullet;
     if (bullet) {
-      bullet.fire(this.x, this.y, angle, this.damage);
+      bullet.fire(this.x, this.y, angle, this.damage, this.turretType);
     }
   }
 }
