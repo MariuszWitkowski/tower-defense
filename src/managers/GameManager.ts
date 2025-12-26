@@ -61,6 +61,7 @@ export default class GameManager {
       this.waveManager.startWave(
         waveConfig,
         wave + 1,
+        this,
         this.onWaveComplete.bind(this),
       );
     }

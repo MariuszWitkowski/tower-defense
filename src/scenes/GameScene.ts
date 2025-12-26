@@ -1,12 +1,19 @@
 import Phaser from "phaser";
 import container from "../di-container";
+import AssetsManager from "../managers/AssetsManager";
 import GameManager from "../managers/GameManager";
 
 export default class GameScene extends Phaser.Scene {
   private gameManager!: GameManager;
+  private assetsManager!: AssetsManager;
 
   constructor() {
     super("GameScene");
+  }
+
+  preload() {
+    this.assetsManager = container.resolve(AssetsManager);
+    this.assetsManager.preload(this);
   }
 
   create() {

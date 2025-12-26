@@ -3,8 +3,6 @@ import Enemy from "./Enemy";
 import Bullet from "./Bullet";
 import { TurretType } from "../utils/TurretType";
 import {
-  C_TURRET,
-  TILE_SIZE,
   TURRET_RANGE,
   FIRE_RATE,
   BULLET_DAMAGE,
@@ -28,23 +26,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
     bullets: Phaser.Physics.Arcade.Group,
     turretType: TurretType,
   ) {
-    // ... (Keep existing texture generation code from Milestone 4) ...
-    const key = "turretTexture";
-
-    // Generate texture if it doesn't exist
-    if (!scene.textures.exists(key)) {
-      const graphics = scene.make.graphics();
-      graphics.fillStyle(C_TURRET, 1);
-      // Draw a circle for the turret
-      graphics.fillCircle(TILE_SIZE / 2, TILE_SIZE / 2, TILE_SIZE * 0.4);
-      // Draw a little "barrel" indicating direction (visual only for now)
-      graphics.fillStyle(0xffffff, 1);
-      graphics.fillRect(TILE_SIZE / 2, TILE_SIZE / 2 - 5, TILE_SIZE * 0.4, 10);
-
-      graphics.generateTexture(key, TILE_SIZE, TILE_SIZE);
-    }
-
-    super(scene, x, y, key);
+    super(scene, x, y, "turretTexture");
     scene.add.existing(this);
 
     this.enemies = enemies;

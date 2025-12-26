@@ -1,11 +1,9 @@
 import Phaser from "phaser";
 import GameManager from "../managers/GameManager";
 import {
-  C_ENEMY,
   ENEMY_DEFENSE,
   ENEMY_HEALTH,
   ENEMY_SPEED,
-  TILE_SIZE,
 } from "../utils/Constants";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -27,15 +25,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     defense: number,
     gameManager: GameManager,
   ) {
-    const key = "enemyTexture";
-    if (!scene.textures.exists(key)) {
-      const graphics = scene.make.graphics();
-      graphics.fillStyle(C_ENEMY, 1);
-      graphics.fillRect(0, 0, TILE_SIZE * 0.6, TILE_SIZE * 0.6);
-      graphics.generateTexture(key, TILE_SIZE * 0.6, TILE_SIZE * 0.6);
-    }
-
-    super(scene, x, y, key);
+    super(scene, x, y, "enemyTexture");
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
