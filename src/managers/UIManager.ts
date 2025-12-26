@@ -3,7 +3,6 @@ import Turret from "../entities/Turret";
 import { TURRET_UPGRADE_COST } from "../utils/Constants";
 import { useGameStore } from "../state/gameStore";
 import { injectable } from "tsyringe";
-import GameManager from "./GameManager";
 import { TurretType } from "../utils/TurretType";
 
 @injectable()
@@ -19,15 +18,21 @@ export default class UIManager {
   private upgradeButton!: Phaser.GameObjects.Text;
   private newLevelButton!: Phaser.GameObjects.Text;
   private selectedTurret: Turret | null = null;
-  private gameManager!: GameManager;
   private selectedTurretType: TurretType = TurretType.QUICK;
   private quickTurretButton!: Phaser.GameObjects.Text;
   private heavyTurretButton!: Phaser.GameObjects.Text;
   private splashTurretButton!: Phaser.GameObjects.Text;
+  private upgradeTurretCallback!: (turret: Turret) => void;
+  private nextLevelCallback!: () => void;
 
-  public setScene(scene: Phaser.Scene, gameManager: GameManager) {
+  public setScene(
+    scene: Phaser.Scene,
+    upgradeTurretCallback: (turret: Turret) => void,
+    nextLevelCallback: () => void,
+  ) {
     this.scene = scene;
-    this.gameManager = gameManager;
+    this.upgradeTurretCallback = upgradeTurretCallback;
+    this.nextLevelCallback = nextLevelCallback;
     this.createUI();
     this.createTurretUI();
     this.createTurretSelectionUI();
@@ -83,7 +88,7 @@ export default class UIManager {
       .setInteractive()
       .on("pointerdown", () => {
         if (this.selectedTurret) {
-          this.gameManager.upgradeTurret(this.selectedTurret);
+          this.upgradeTurretCallback(this.selectedTurret);
           this.updateTurretUI();
         }
       });
@@ -137,7 +142,7 @@ export default class UIManager {
       .setOrigin(0.5)
       .setInteractive()
       .on("pointerdown", () => {
-        this.gameManager.nextLevel();
+        this.nextLevelCallback();
       });
     this.newLevelButton.setVisible(false);
   }
