@@ -53,7 +53,11 @@ export default class GridManager {
 
     const { money, actions } = useGameStore.getState();
     if (money >= TURRET_COST) {
-      this.turretManager.placeTurret(worldPos.x, worldPos.y);
+      this.turretManager.placeTurret(
+        worldPos.x,
+        worldPos.y,
+        this.uiManager.getSelectedTurretType(),
+      );
       this.logicGrid[y][x] = 2;
       actions.spendMoney(TURRET_COST);
       this.uiManager.hideTurretUI();

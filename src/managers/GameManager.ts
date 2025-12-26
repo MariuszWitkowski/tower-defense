@@ -9,6 +9,7 @@ import Bullet from "../entities/Bullet";
 import Enemy from "../entities/Enemy";
 import Turret from "../entities/Turret";
 import { ENEMY_REWARD, TURRET_UPGRADE_COST } from "../utils/Constants";
+import { TurretType } from "../utils/TurretType";
 
 @injectable()
 export default class GameManager {
@@ -97,6 +98,29 @@ export default class GameManager {
     bullet.setActive(false);
     bullet.setVisible(false);
     enemy.takeDamage(bullet.damage);
+
+    if (bullet.turretType === TurretType.SPLASH) {
+      const splashRadius = 50;
+      this.waveManager.getEnemyGroup().getChildren().forEach((child) => {
+        const otherEnemy = child as Enemy;
+        if (
+          otherEnemy.active &&
+          otherEnemy !== enemy &&
+          Phaser.Math.Distance.Between(
+            enemy.x,
+            enemy.y,
+            otherEnemy.x,
+            otherEnemy.y,
+          ) <= splashRadius
+        ) {
+          otherEnemy.takeDamage(bullet.damage * 0.5); // Splash damage is 50% of original
+          if (!otherEnemy.active) {
+            const { actions } = useGameStore.getState();
+            actions.earnMoney(ENEMY_REWARD);
+          }
+        }
+      });
+    }
 
     if (!enemy.active) {
       const { actions } = useGameStore.getState();

@@ -4,6 +4,7 @@ import { TURRET_UPGRADE_COST } from "../utils/Constants";
 import { useGameStore } from "../state/gameStore";
 import { injectable } from "tsyringe";
 import GameManager from "./GameManager";
+import { TurretType } from "../utils/TurretType";
 
 @injectable()
 export default class UIManager {
@@ -19,12 +20,17 @@ export default class UIManager {
   private newLevelButton!: Phaser.GameObjects.Text;
   private selectedTurret: Turret | null = null;
   private gameManager!: GameManager;
+  private selectedTurretType: TurretType = TurretType.QUICK;
+  private quickTurretButton!: Phaser.GameObjects.Text;
+  private heavyTurretButton!: Phaser.GameObjects.Text;
+  private splashTurretButton!: Phaser.GameObjects.Text;
 
   public setScene(scene: Phaser.Scene, gameManager: GameManager) {
     this.scene = scene;
     this.gameManager = gameManager;
     this.createUI();
     this.createTurretUI();
+    this.createTurretSelectionUI();
     this.createNewLevelButton();
 
     useGameStore.subscribe((state) => {
@@ -142,5 +148,60 @@ export default class UIManager {
 
   public hideNewLevelButton() {
     this.newLevelButton.setVisible(false);
+  }
+
+  private createTurretSelectionUI() {
+    const turretSelectionContainer = this.scene.add.container(10, 300);
+
+    this.quickTurretButton = this.scene.add
+      .text(0, 0, "Build Quick Turret")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.selectedTurretType = TurretType.QUICK;
+        this.updateTurretButtonStyles();
+      });
+
+    this.heavyTurretButton = this.scene.add
+      .text(0, 30, "Build Heavy Turret")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.selectedTurretType = TurretType.HEAVY;
+        this.updateTurretButtonStyles();
+      });
+
+    this.splashTurretButton = this.scene.add
+      .text(0, 60, "Build Splash Turret")
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.selectedTurretType = TurretType.SPLASH;
+        this.updateTurretButtonStyles();
+      });
+
+    turretSelectionContainer.add([
+      this.quickTurretButton,
+      this.heavyTurretButton,
+      this.splashTurretButton,
+    ]);
+
+    this.updateTurretButtonStyles();
+  }
+
+  private updateTurretButtonStyles() {
+    const style = { font: "18px Arial", color: "#ffffff" };
+    const selectedStyle = { font: "18px Arial", color: "#00ff00" };
+
+    this.quickTurretButton.setStyle(
+      this.selectedTurretType === TurretType.QUICK ? selectedStyle : style,
+    );
+    this.heavyTurretButton.setStyle(
+      this.selectedTurretType === TurretType.HEAVY ? selectedStyle : style,
+    );
+    this.splashTurretButton.setStyle(
+      this.selectedTurretType === TurretType.SPLASH ? selectedStyle : style,
+    );
+  }
+
+  public getSelectedTurretType(): TurretType {
+    return this.selectedTurretType;
   }
 }

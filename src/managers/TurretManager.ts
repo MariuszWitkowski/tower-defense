@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { injectable } from "tsyringe";
 import Turret from "../entities/Turret";
 import Bullet from "../entities/Bullet";
+import { TurretType } from "../utils/TurretType";
 
 @injectable()
 export default class TurretManager {
@@ -26,8 +27,15 @@ export default class TurretManager {
     });
   }
 
-  public placeTurret(x: number, y: number) {
-    const turret = new Turret(this.scene, x, y, this.enemies, this.bullets);
+  public placeTurret(x: number, y: number, turretType: TurretType) {
+    const turret = new Turret(
+      this.scene,
+      x,
+      y,
+      this.enemies,
+      this.bullets,
+      turretType,
+    );
     this.turrets.add(turret);
   }
 
