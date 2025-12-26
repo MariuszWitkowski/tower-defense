@@ -66,16 +66,23 @@ export default class GameManager {
   }
 
   private onWaveComplete() {
-    const { level, wave, actions } = useGameStore.getState();
+    const { level, wave } = useGameStore.getState();
     const levelConfig = this.levelManager.getLevel(level - 1);
 
     if (levelConfig && wave < levelConfig.waves.length) {
       this.startWave();
     } else {
-      actions.setLevel(level + 1);
-      actions.setWave(0);
-      this.startLevel();
+      this.uiManager.showNewLevelButton();
     }
+  }
+
+  public nextLevel() {
+    const { level, actions } = useGameStore.getState();
+    actions.setLevel(level + 1);
+    actions.setWave(0);
+    this.turretManager.resetTurrets();
+    this.startLevel();
+    this.uiManager.hideNewLevelButton();
   }
 
   private setupPhysics() {

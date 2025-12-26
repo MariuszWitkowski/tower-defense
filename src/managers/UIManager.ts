@@ -16,6 +16,7 @@ export default class UIManager {
   private turretNameText!: Phaser.GameObjects.Text;
   private turretStatsText!: Phaser.GameObjects.Text;
   private upgradeButton!: Phaser.GameObjects.Text;
+  private newLevelButton!: Phaser.GameObjects.Text;
   private selectedTurret: Turret | null = null;
   private gameManager!: GameManager;
 
@@ -24,6 +25,7 @@ export default class UIManager {
     this.gameManager = gameManager;
     this.createUI();
     this.createTurretUI();
+    this.createNewLevelButton();
 
     useGameStore.subscribe((state) => {
       this.moneyText.setText(`Money: $${state.money}`);
@@ -116,5 +118,29 @@ export default class UIManager {
     } else {
       this.upgradeButton.setColor("#00ff00").setInteractive();
     }
+  }
+
+  private createNewLevelButton() {
+    this.newLevelButton = this.scene.add
+      .text(400, 300, "Start Next Level", {
+        font: "32px Arial",
+        color: "#00ff00",
+        backgroundColor: "#000000",
+        padding: { x: 20, y: 10 },
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.gameManager.nextLevel();
+      });
+    this.newLevelButton.setVisible(false);
+  }
+
+  public showNewLevelButton() {
+    this.newLevelButton.setVisible(true);
+  }
+
+  public hideNewLevelButton() {
+    this.newLevelButton.setVisible(false);
   }
 }
