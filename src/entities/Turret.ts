@@ -2,11 +2,7 @@ import Phaser from "phaser";
 import Enemy from "./Enemy";
 import Bullet from "./Bullet";
 import { TurretType } from "../utils/TurretType";
-import {
-  TURRET_RANGE,
-  FIRE_RATE,
-  BULLET_DAMAGE,
-} from "../utils/Constants";
+import { TURRET_RANGE, FIRE_RATE, BULLET_DAMAGE } from "../utils/Constants";
 
 export default class Turret extends Phaser.GameObjects.Sprite {
   public level = 1;

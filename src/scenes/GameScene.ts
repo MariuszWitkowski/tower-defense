@@ -27,9 +27,11 @@ export default class GameScene extends Phaser.Scene {
       this,
       this.gameManager.upgradeTurret.bind(this.gameManager),
       this.gameManager.nextLevel.bind(this.gameManager),
+      this.gameManager.startCurrentLevel.bind(this.gameManager),
     );
 
-    this.gameManager.start();
+    this.gameManager.initialize();
+    this.gameManager.uiManager.showStartLevelButton();
   }
 
   update(time: number, delta: number) {

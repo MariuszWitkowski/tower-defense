@@ -27,8 +27,7 @@ export default class GameManager {
     this.scene = scene;
   }
 
-  public start() {
-    this.startLevel();
+  public initialize() {
     this.setupPhysics();
   }
 
@@ -36,7 +35,8 @@ export default class GameManager {
     this.waveManager.update();
   }
 
-  private startLevel() {
+  public startCurrentLevel() {
+    this.uiManager.hideStartLevelButton();
     const { level, actions } = useGameStore.getState();
     const levelConfig = this.levelManager.getLevel(level - 1);
 
@@ -83,7 +83,7 @@ export default class GameManager {
     actions.setLevel(level + 1);
     actions.setWave(0);
     this.turretManager.clearTurrets();
-    this.startLevel();
+    this.startCurrentLevel();
     this.uiManager.hideNewLevelButton();
   }
 
@@ -102,25 +102,28 @@ export default class GameManager {
 
     if (bullet.turretType === TurretType.SPLASH) {
       const splashRadius = 50;
-      this.waveManager.getEnemyGroup().getChildren().forEach((child) => {
-        const otherEnemy = child as Enemy;
-        if (
-          otherEnemy.active &&
-          otherEnemy !== enemy &&
-          Phaser.Math.Distance.Between(
-            enemy.x,
-            enemy.y,
-            otherEnemy.x,
-            otherEnemy.y,
-          ) <= splashRadius
-        ) {
-          otherEnemy.takeDamage(bullet.damage * 0.5); // Splash damage is 50% of original
-          if (!otherEnemy.active) {
-            const { actions } = useGameStore.getState();
-            actions.earnMoney(ENEMY_REWARD);
+      this.waveManager
+        .getEnemyGroup()
+        .getChildren()
+        .forEach((child) => {
+          const otherEnemy = child as Enemy;
+          if (
+            otherEnemy.active &&
+            otherEnemy !== enemy &&
+            Phaser.Math.Distance.Between(
+              enemy.x,
+              enemy.y,
+              otherEnemy.x,
+              otherEnemy.y,
+            ) <= splashRadius
+          ) {
+            otherEnemy.takeDamage(bullet.damage * 0.5); // Splash damage is 50% of original
+            if (!otherEnemy.active) {
+              const { actions } = useGameStore.getState();
+              actions.earnMoney(ENEMY_REWARD);
+            }
           }
-        }
-      });
+        });
     }
 
     if (!enemy.active) {
