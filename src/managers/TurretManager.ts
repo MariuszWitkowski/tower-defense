@@ -7,9 +7,9 @@ import { TurretType } from "../utils/TurretType";
 @injectable()
 export default class TurretManager {
   private scene!: Phaser.Scene;
-  private turrets: Phaser.GameObjects.Group;
+  private turrets!: Phaser.GameObjects.Group;
   private enemies!: Phaser.Physics.Arcade.Group;
-  private bullets: Phaser.Physics.Arcade.Group;
+  private bullets!: Phaser.Physics.Arcade.Group;
 
   constructor() {
     // Groups will be initialized in setScene
