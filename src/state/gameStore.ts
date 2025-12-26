@@ -1,4 +1,4 @@
-import create from "zustand/vanilla";
+import { createStore as create } from "zustand/vanilla";
 import { STARTING_LIVES, STARTING_MONEY } from "../utils/Constants";
 
 interface GameState {
