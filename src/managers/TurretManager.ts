@@ -59,4 +59,8 @@ export default class TurretManager {
       graphics.destroy();
     });
   }
+
+  public resetTurrets() {
+    this.turrets.clear(true, true);
+  }
 }
