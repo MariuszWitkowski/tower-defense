@@ -6,12 +6,14 @@ export interface GameState {
   lives: number;
   level: number;
   wave: number;
+  gameOver: boolean;
   actions: {
     spendMoney: (amount: number) => void;
     earnMoney: (amount: number) => void;
     loseLife: () => void;
     setWave: (wave: number) => void;
     setLevel: (level: number) => void;
+    setGameOver: (gameOver: boolean) => void;
   };
 }
 
@@ -20,11 +22,13 @@ export const useGameStore = create<GameState>((set) => ({
   lives: STARTING_LIVES,
   level: 1,
   wave: 0,
+  gameOver: false,
   actions: {
     spendMoney: (amount) => set((state) => ({ money: state.money - amount })),
     earnMoney: (amount) => set((state) => ({ money: state.money + amount })),
     loseLife: () => set((state) => ({ lives: state.lives - 1 })),
     setWave: (wave) => set({ wave }),
     setLevel: (level) => set({ level }),
+    setGameOver: (gameOver) => set({ gameOver }),
   },
 }));

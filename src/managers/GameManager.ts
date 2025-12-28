@@ -29,6 +29,18 @@ export default class GameManager {
 
   public initialize() {
     this.setupPhysics();
+    useGameStore.subscribe((state) => {
+      if (state.lives <= 0) {
+        this.gameOver();
+      }
+    });
+  }
+
+  private gameOver() {
+    const { actions } = useGameStore.getState();
+    actions.setGameOver(true);
+    this.waveManager.stopWave();
+    this.uiManager.showGameOver();
   }
 
   public update(_time: number, _delta: number) {
