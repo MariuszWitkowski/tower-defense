@@ -83,6 +83,7 @@ export default class GameManager {
     actions.setLevel(level + 1);
     actions.setWave(0);
     this.turretManager.clearTurrets();
+    this.gridManager.clearGrid();
     this.startCurrentLevel();
     this.uiManager.hideNewLevelButton();
   }

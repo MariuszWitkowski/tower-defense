@@ -127,4 +127,15 @@ export default class GridManager {
       }
     });
   }
+
+  public clearGrid() {
+    for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < COLS; x++) {
+        this.logicGrid[y][x] = 0;
+        if (this.graphicsGrid[y] && this.graphicsGrid[y][x]) {
+          this.graphicsGrid[y][x].setFillStyle(C_TILE_DEFAULT);
+        }
+      }
+    }
+  }
 }
