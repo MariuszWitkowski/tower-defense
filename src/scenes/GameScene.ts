@@ -36,5 +36,6 @@ export default class GameScene extends Phaser.Scene {
 
   update(time: number, delta: number) {
     this.gameManager.update(time, delta);
+    this.gameManager.uiManager.update();
   }
 }
