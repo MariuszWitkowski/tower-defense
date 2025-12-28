@@ -10,6 +10,7 @@ export default class ErrorHandler {
   private errors: IError[] = [];
 
   public addError(error: Error): void {
+    console.error(error);
     this.errors.push({
       message: error.message,
       stack: error.stack,
