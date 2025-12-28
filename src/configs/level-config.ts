@@ -6,6 +6,7 @@ export interface WaveConfig {
 export interface LevelConfig {
   path: { x: number; y: number }[];
   waves: WaveConfig[];
+  enemyTexture: string;
 }
 
 export const LEVELS: LevelConfig[] = [
@@ -33,6 +34,7 @@ export const LEVELS: LevelConfig[] = [
       { enemyCount: 8, spawnDelay: 800 },
       { enemyCount: 10, spawnDelay: 500 },
     ],
+    enemyTexture: "enemy-1",
   },
   // Level 2
   {
@@ -58,6 +60,7 @@ export const LEVELS: LevelConfig[] = [
       { enemyCount: 15, spawnDelay: 700 },
       { enemyCount: 20, spawnDelay: 400 },
     ],
+    enemyTexture: "enemy-2",
   },
   // Level 3
   {
@@ -84,5 +87,6 @@ export const LEVELS: LevelConfig[] = [
       { enemyCount: 20, spawnDelay: 600 },
       { enemyCount: 25, spawnDelay: 300 },
     ],
+    enemyTexture: "enemy-3",
   },
 ];

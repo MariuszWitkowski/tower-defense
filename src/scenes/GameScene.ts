@@ -17,6 +17,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.assetsManager.createAnimations(this);
     this.gameManager = container.resolve(GameManager);
 
     this.gameManager.setScene(this);

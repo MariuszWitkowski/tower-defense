@@ -16,6 +16,7 @@ export default class WaveManager {
   private onWaveComplete!: () => void;
   private isWaveActive = false;
   private waveNumber = 1;
+  private enemyTexture!: string;
 
   constructor(@inject("GridManager") private gridManager: GridManager) {}
 
@@ -39,10 +40,12 @@ export default class WaveManager {
     waveNumber: number,
     gameManager: GameManager,
     onWaveComplete: () => void,
+    enemyTexture: string,
   ) {
     if (this.worldPath.length === 0) return;
 
     this.waveNumber = waveNumber;
+    this.enemyTexture = enemyTexture;
     this.enemiesToSpawn = waveConfig.enemyCount;
     this.isWaveActive = true;
     this.onWaveComplete = onWaveComplete;
@@ -68,6 +71,7 @@ export default class WaveManager {
       this.scene,
       startPoint.x,
       startPoint.y,
+      this.enemyTexture,
       this.worldPath,
       health,
       speed,
