@@ -1,3 +1,4 @@
+import Phaser from "phaser";
 import { injectable } from "tsyringe";
 import { LEVELS, LevelConfig } from "../configs/level-config";
 
@@ -8,6 +9,9 @@ export default class LevelManager {
   constructor() {
     this.levels = LEVELS;
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  public setScene(_scene: Phaser.Scene) {}
 
   public getLevel(levelIndex: number): LevelConfig | undefined {
     return this.levels[levelIndex];
