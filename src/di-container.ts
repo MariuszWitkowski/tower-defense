@@ -9,14 +9,14 @@ import AssetsManager from "./managers/AssetsManager";
 import ErrorHandler from "./managers/ErrorHandler";
 import ErrorDisplay from "./managers/ErrorDisplay";
 
-container.register("AssetsManager", { useClass: AssetsManager });
-container.register("ErrorDisplay", { useClass: ErrorDisplay });
-container.register("ErrorHandler", { useClass: ErrorHandler });
-container.register("GridManager", { useClass: GridManager });
-container.register("LevelManager", { useClass: LevelManager });
-container.register("TurretManager", { useClass: TurretManager });
-container.register("WaveManager", { useClass: WaveManager });
-container.register("UIManager", { useClass: UIManager });
-container.register("GameManager", { useClass: GameManager });
+container.registerSingleton("AssetsManager", AssetsManager);
+container.registerSingleton("ErrorDisplay", ErrorDisplay);
+container.registerSingleton("ErrorHandler", ErrorHandler);
+container.registerSingleton("GridManager", GridManager);
+container.registerSingleton("LevelManager", LevelManager);
+container.registerSingleton("TurretManager", TurretManager);
+container.registerSingleton("WaveManager", WaveManager);
+container.registerSingleton("UIManager", UIManager);
+container.registerSingleton("GameManager", GameManager);
 
 export default container;
