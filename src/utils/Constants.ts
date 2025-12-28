@@ -26,3 +26,4 @@ export const TURRET_UPGRADE_COST = 25;
 export const STARTING_MONEY = 150;
 export const STARTING_LIVES = 10;
 export const ENEMY_REWARD = 10; // Money gained when killing an enemy
+export const LEVEL_REWARD = 100; // Money gained when winning a level
