@@ -14,6 +14,7 @@ describe("gameStore", () => {
       lives: STARTING_LIVES,
       level: 1,
       wave: 0,
+      gameOver: false,
     };
     actions = {
       spendMoney: (amount: number) => (state.money -= amount),
@@ -21,6 +22,7 @@ describe("gameStore", () => {
       loseLife: () => (state.lives -= 1),
       setWave: (wave: number) => (state.wave = wave),
       setLevel: (level: number) => (state.level = level),
+      setGameOver: (gameOver: boolean) => (state.gameOver = gameOver),
     };
     (useGameStore as unknown as Mock).mockReturnValue({ ...state, actions });
   });

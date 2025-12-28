@@ -91,4 +91,12 @@ export default class WaveManager {
       this.onWaveComplete();
     }
   }
+
+  public stopWave() {
+    if (this.spawnTimer) {
+      this.spawnTimer.remove();
+    }
+    this.enemyGroup.clear(true, true);
+    this.isWaveActive = false;
+  }
 }

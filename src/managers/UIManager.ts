@@ -314,4 +314,15 @@ export default class UIManager {
       this.errorIcon.setVisible(true);
     }
   }
+
+  public showGameOver() {
+    this.scene.add
+      .text(400, 300, "Game Over", {
+        font: "48px Arial",
+        color: "#ff0000",
+        backgroundColor: "#000000",
+        padding: { x: 20, y: 10 },
+      })
+      .setOrigin(0.5);
+  }
 }
