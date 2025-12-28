@@ -23,6 +23,7 @@ export default class GameScene extends Phaser.Scene {
     this.gameManager.gridManager.setScene(this);
     this.gameManager.waveManager.setScene(this);
     this.gameManager.turretManager.setScene(this);
+    this.gameManager.levelManager.setScene(this);
     this.gameManager.uiManager.setScene(
       this,
       this.gameManager.upgradeTurret.bind(this.gameManager),
