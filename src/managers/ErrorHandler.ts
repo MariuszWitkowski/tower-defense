@@ -1,4 +1,5 @@
-import { singleton } from "tsyringe";
+import { singleton, inject } from "tsyringe";
+import ErrorDisplay from "./ErrorDisplay";
 
 export interface IError {
   message: string;
@@ -9,12 +10,16 @@ export interface IError {
 export default class ErrorHandler {
   private errors: IError[] = [];
 
+  constructor(@inject("ErrorDisplay") private errorDisplay: ErrorDisplay) {}
+
   public addError(error: Error): void {
     console.error(error);
-    this.errors.push({
+    const errorData = {
       message: error.message,
       stack: error.stack,
-    });
+    };
+    this.errors.push(errorData);
+    this.errorDisplay.addError(errorData);
   }
 
   public getErrors(): IError[] {
@@ -23,5 +28,6 @@ export default class ErrorHandler {
 
   public clearErrors(): void {
     this.errors = [];
+    this.errorDisplay.clearErrors();
   }
 }

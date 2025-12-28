@@ -7,8 +7,10 @@ import UIManager from "./managers/UIManager";
 import GameManager from "./managers/GameManager";
 import AssetsManager from "./managers/AssetsManager";
 import ErrorHandler from "./managers/ErrorHandler";
+import ErrorDisplay from "./managers/ErrorDisplay";
 
 container.register("AssetsManager", { useClass: AssetsManager });
+container.register("ErrorDisplay", { useClass: ErrorDisplay });
 container.register("ErrorHandler", { useClass: ErrorHandler });
 container.register("GridManager", { useClass: GridManager });
 container.register("LevelManager", { useClass: LevelManager });
