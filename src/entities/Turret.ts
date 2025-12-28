@@ -49,6 +49,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
   }
 
   update(time: number, _delta: number) {
+    if (!this.enemies) return;
     // 1. Cooldown Check
     if (time < this.nextFire) return;
 

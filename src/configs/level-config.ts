@@ -59,4 +59,30 @@ export const LEVELS: LevelConfig[] = [
       { enemyCount: 20, spawnDelay: 400 },
     ],
   },
+  // Level 3
+  {
+    path: [
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+      { x: 2, y: 1 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+      { x: 4, y: 2 },
+      { x: 4, y: 3 },
+      { x: 4, y: 4 },
+      { x: 5, y: 4 },
+      { x: 6, y: 4 },
+      { x: 7, y: 4 },
+      { x: 8, y: 4 },
+      { x: 8, y: 3 },
+      { x: 8, y: 2 },
+      { x: 8, y: 1 },
+      { x: 9, y: 1 },
+    ],
+    waves: [
+      { enemyCount: 15, spawnDelay: 900 },
+      { enemyCount: 20, spawnDelay: 600 },
+      { enemyCount: 25, spawnDelay: 300 },
+    ],
+  },
 ];
