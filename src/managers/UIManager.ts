@@ -16,7 +16,6 @@ export default class UIManager {
   private livesText!: Phaser.GameObjects.Text;
   private levelText!: Phaser.GameObjects.Text;
   private waveText!: Phaser.GameObjects.Text;
-  private gameOverText!: Phaser.GameObjects.Text;
   private turretUIContainer!: Phaser.GameObjects.Container;
   private turretNameText!: Phaser.GameObjects.Text;
   private turretStatsText!: Phaser.GameObjects.Text;
@@ -52,7 +51,6 @@ export default class UIManager {
     this.createNewLevelButton();
     this.createStartLevelButton();
     this.createErrorUI();
-    this.createGameOverText();
 
     useGameStore.subscribe((state) => {
       this.moneyText.setText(`Money: $${state.money}`);
@@ -306,18 +304,13 @@ export default class UIManager {
   }
 
   public showGameOver() {
-    this.gameOverText.setVisible(true);
-  }
-
-  private createGameOverText() {
-    this.gameOverText = this.scene.add
+    this.scene.add
       .text(400, 300, "Game Over", {
         font: "48px Arial",
         color: "#ff0000",
         backgroundColor: "#000000",
         padding: { x: 20, y: 10 },
       })
-      .setOrigin(0.5)
-      .setVisible(false);
+      .setOrigin(0.5);
   }
 }
