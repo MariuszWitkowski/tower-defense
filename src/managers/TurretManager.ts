@@ -36,6 +36,7 @@ export default class TurretManager {
       this.bullets,
       turretType,
     );
+    turret.initialize();
     this.turrets.add(turret);
   }
 

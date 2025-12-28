@@ -23,7 +23,6 @@ export default class Turret extends Phaser.GameObjects.Sprite {
     turretType: TurretType,
   ) {
     super(scene, x, y, "turretTexture");
-    scene.add.existing(this);
 
     this.enemies = enemies;
     this.bullets = bullets;
@@ -43,6 +42,10 @@ export default class Turret extends Phaser.GameObjects.Sprite {
         this.range = TURRET_RANGE * 0.8;
         break;
     }
+  }
+
+  public initialize() {
+    this.scene.add.existing(this);
   }
 
   update(time: number, _delta: number) {
