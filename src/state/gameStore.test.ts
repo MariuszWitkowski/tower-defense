@@ -64,8 +64,4 @@ describe("gameStore", () => {
     actions.setLevel(2);
     expect(state.level).toBe(2);
   });
-
-  it("should fail intentionally for testing CI", () => {
-    expect(true).toBe(false);
-  });
 });
