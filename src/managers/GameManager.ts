@@ -32,6 +32,8 @@ export default class GameManager {
   }
 
   public update(_time: number, _delta: number) {
+    const { gameOver } = useGameStore.getState();
+    if (gameOver) return;
     this.waveManager.update();
   }
 
@@ -137,6 +139,17 @@ export default class GameManager {
     const { actions } = useGameStore.getState();
     actions.loseLife();
     enemy.destroy();
+    this.checkGameOver();
+  }
+
+  private checkGameOver() {
+    const { lives, actions } = useGameStore.getState();
+    if (lives <= 0) {
+      actions.setGameOver(true);
+      this.scene.physics.pause();
+      this.waveManager.stopWave();
+      this.uiManager.showGameOver();
+    }
   }
 
   public upgradeTurret(turret: Turret) {
