@@ -7,7 +7,6 @@ import ErrorDisplay from "./managers/ErrorDisplay";
 import container from "./di-container";
 
 // Resolve instances from the container
-container.resolve(ErrorDisplay);
 const errorHandler = container.resolve(ErrorHandler);
 
 window.onerror = (message, source, lineno, colno, error) => {
