@@ -1,4 +1,5 @@
 import { singleton } from "tsyringe";
+import { version } from "../../package.json";
 import { IError } from "./ErrorHandler";
 import "../error-display.css";
 
@@ -34,7 +35,7 @@ export default class ErrorDisplay {
 
     const errorHeader = document.createElement("div");
     errorHeader.id = "error-header";
-    errorHeader.innerHTML = "<h2>Errors</h2>";
+    errorHeader.innerHTML = `<h2>Errors</h2><span>v${version}</span>`;
     this.errorOverlay.appendChild(errorHeader);
 
     const closeButton = document.createElement("button");
