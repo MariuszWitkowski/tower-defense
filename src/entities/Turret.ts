@@ -46,7 +46,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
 
   public initialize() {
     this.scene.add.existing(this);
-    this.anims.play(`${this.turretType}_anim`);
+    this.anims.play({ key: `${this.turretType}_anim` });
   }
 
   update(time: number, _delta: number) {
