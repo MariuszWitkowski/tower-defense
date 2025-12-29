@@ -74,13 +74,14 @@ export default class GameManager {
     const levelConfig = this.levelManager.getLevel(level - 1);
     const waveConfig = levelConfig?.waves[wave];
 
-    if (waveConfig) {
+    if (waveConfig && levelConfig) {
       actions.setWave(wave + 1);
       this.waveManager.startWave(
         waveConfig,
         wave + 1,
         this,
         this.onWaveComplete.bind(this),
+        levelConfig.enemyTexture,
       );
     }
   }

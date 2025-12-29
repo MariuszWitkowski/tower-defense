@@ -1,5 +1,5 @@
 export enum TurretType {
-  QUICK,
-  HEAVY,
-  SPLASH,
+  QUICK = "turret-1",
+  HEAVY = "turret-2",
+  SPLASH = "turret-3",
 }

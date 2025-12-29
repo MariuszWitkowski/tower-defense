@@ -15,15 +15,18 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene: Phaser.Scene,
     x: number,
     y: number,
+    texture: string,
     path: Phaser.Math.Vector2[],
     health: number,
     speed: number,
     defense: number,
     gameManager: GameManager,
   ) {
-    super(scene, x, y, "enemyTexture");
+    super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    this.anims.play(`${texture}_anim`);
 
     this.path = path;
     this.currentPointIndex = 0;
