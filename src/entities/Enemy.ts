@@ -54,12 +54,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     const target = this.path[this.currentPointIndex];
 
-    const distance = Phaser.Math.Distance.Between(
-      this.x,
-      this.y,
-      target.x,
-      target.y,
-    );
+    const distance = Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
 
     if (distance < 5) {
       this.setPosition(target.x, target.y);

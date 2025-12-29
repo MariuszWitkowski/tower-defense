@@ -41,10 +41,7 @@ export default class GridManager {
     }
 
     if (tileType === 2) {
-      const existingTurret = this.turretManager.getTurretAt(
-        worldPos.x,
-        worldPos.y,
-      );
+      const existingTurret = this.turretManager.getTurretAt(worldPos.x, worldPos.y);
       if (existingTurret) {
         this.uiManager.showTurretUI(existingTurret);
       }

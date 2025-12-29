@@ -71,21 +71,15 @@ export default class UIManager {
     this.moneyText = this.scene.add.text(10, 10, "Money: 0", style);
     this.levelText = this.scene.add.text(10, 40, "Level: 1", style);
 
-    this.livesText = this.scene.add
-      .text(790, 10, "Lives: 0", style)
-      .setOrigin(1, 0);
-    this.waveText = this.scene.add
-      .text(790, 40, "Wave: 1", style)
-      .setOrigin(1, 0);
+    this.livesText = this.scene.add.text(790, 10, "Lives: 0", style).setOrigin(1, 0);
+    this.waveText = this.scene.add.text(790, 40, "Wave: 1", style).setOrigin(1, 0);
   }
 
   private createTurretUI() {
     this.turretUIContainer = this.scene.add.container(10, 100);
     this.turretUIContainer.setVisible(false);
 
-    const background = this.scene.add
-      .rectangle(0, 0, 180, 150, 0x000000, 0.7)
-      .setOrigin(0);
+    const background = this.scene.add.rectangle(0, 0, 180, 150, 0x000000, 0.7).setOrigin(0);
     this.turretUIContainer.add(background);
 
     this.turretNameText = this.scene.add.text(10, 10, "", {
@@ -107,11 +101,7 @@ export default class UIManager {
         }
       });
 
-    this.turretUIContainer.add([
-      this.turretNameText,
-      this.turretStatsText,
-      this.upgradeButton,
-    ]);
+    this.turretUIContainer.add([this.turretNameText, this.turretStatsText, this.upgradeButton]);
   }
 
   public showTurretUI(turret: Turret) {

@@ -8,11 +8,7 @@ import { useGameStore } from "../state/gameStore";
 import Bullet from "../entities/Bullet";
 import Enemy from "../entities/Enemy";
 import Turret from "../entities/Turret";
-import {
-  ENEMY_REWARD,
-  LEVEL_REWARD,
-  TURRET_UPGRADE_COST,
-} from "../utils/Constants";
+import { ENEMY_REWARD, LEVEL_REWARD, TURRET_UPGRADE_COST } from "../utils/Constants";
 import { TurretType } from "../utils/TurretType";
 
 @injectable()
@@ -132,12 +128,8 @@ export default class GameManager {
           if (
             otherEnemy.active &&
             otherEnemy !== enemy &&
-            Phaser.Math.Distance.Between(
-              enemy.x,
-              enemy.y,
-              otherEnemy.x,
-              otherEnemy.y,
-            ) <= splashRadius
+            Phaser.Math.Distance.Between(enemy.x, enemy.y, otherEnemy.x, otherEnemy.y) <=
+              splashRadius
           ) {
             otherEnemy.takeDamage(bullet.damage * 0.5); // Splash damage is 50% of original
             if (!otherEnemy.active) {

@@ -12,9 +12,7 @@ window.onerror = (message, source, lineno, colno, error) => {
   if (error) {
     errorHandler.addError(error);
   } else {
-    const syntheticError = new Error(
-      `Unhandled error: ${message} at ${source}:${lineno}:${colno}`,
-    );
+    const syntheticError = new Error(`Unhandled error: ${message} at ${source}:${lineno}:${colno}`);
     errorHandler.addError(syntheticError);
   }
   return true;
@@ -24,9 +22,7 @@ window.addEventListener("unhandledrejection", (event) => {
   if (event.reason instanceof Error) {
     errorHandler.addError(event.reason);
   } else {
-    const syntheticError = new Error(
-      `Unhandled promise rejection: ${event.reason}`,
-    );
+    const syntheticError = new Error(`Unhandled promise rejection: ${event.reason}`);
     errorHandler.addError(syntheticError);
   }
 });
