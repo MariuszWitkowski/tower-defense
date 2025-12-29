@@ -2,7 +2,9 @@ import { describe, it, expect, beforeEach, vi, Mock } from "vitest";
 import { useGameStore, GameState } from "./gameStore";
 import { STARTING_LIVES, STARTING_MONEY } from "../utils/Constants";
 
-vi.mock("./gameStore");
+vi.mock("./gameStore", () => ({
+  useGameStore: vi.fn(),
+}));
 
 describe("gameStore", () => {
   let state: Omit<GameState, "actions">;
