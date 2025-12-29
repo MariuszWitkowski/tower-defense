@@ -3,7 +3,6 @@ import Phaser from "phaser";
 import GameScene from "./scenes/GameScene";
 import "./style.css"; // Optional: For basic CSS resets
 import ErrorHandler from "./managers/ErrorHandler";
-import ErrorDisplay from "./managers/ErrorDisplay";
 import container from "./di-container";
 
 // Resolve instances from the container
