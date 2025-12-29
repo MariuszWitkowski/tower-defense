@@ -15,17 +15,16 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@vitest/coverage-v8": "^4.0.16",
     "canvas": "^3.2.0",
-    "jsdom": "^27.3.0",
-    "oxfmt": "^0.14.0",
-    "oxlint": "^1.29.0",
+    "jsdom": "^27.4.0",
+    "oxfmt": "^0.20.0",
+    "oxlint": "^1.35.0",
     "rollup-plugin-visualizer": "^6.0.5",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "vitest": "^4.0.16",
-    "vitest-dom": "^0.1.1"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16"
   },
   "dependencies": {
-    "phaser": "^3.80.1",
+    "phaser": "^3.90.0",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.10.0",
     "zustand": "^5.0.9"
