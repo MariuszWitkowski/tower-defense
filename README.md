@@ -41,7 +41,7 @@ Builds the app for production to the `dist` folder.
 
 Serves the production build locally.
 
-### `bun test`
+### `bun run test`
 
 Launches the test runner.
 
@@ -59,7 +59,7 @@ This project has a continuous integration (CI) pipeline that runs on every pull 
 
 1.  **Install Dependencies:** Runs `bun install` to ensure all required packages are present.
 2.  **Lint:** Runs `bun run lint` to check for code style issues.
-3.  **Test:** Runs `bun test` to execute the unit test suite.
+3.  **Test:** Runs `bun run test` to execute the unit test suite.
 4.  **Build:** Runs `bun run build` to ensure the project builds successfully.
 
 All checks must pass before a pull request can be merged.
