@@ -39,60 +39,42 @@ export default class AssetsManager {
   public createAnimations(scene: Phaser.Scene) {
     scene.anims.create({
       key: "enemy-1_anim",
-      frames: [
-        { key: "enemy-1-1" },
-        { key: "enemy-1-2" },
-      ],
+      frames: [{ key: "enemy-1-1" }, { key: "enemy-1-2" }],
       frameRate: 2,
       repeat: -1,
     });
 
     scene.anims.create({
       key: "enemy-2_anim",
-      frames: [
-        { key: "enemy-2-1" },
-        { key: "enemy-2-2" },
-      ],
+      frames: [{ key: "enemy-2-1" }, { key: "enemy-2-2" }],
       frameRate: 2,
       repeat: -1,
     });
 
     scene.anims.create({
       key: "enemy-3_anim",
-      frames: [
-        { key: "enemy-3-1" },
-        { key: "enemy-3-2" },
-      ],
+      frames: [{ key: "enemy-3-1" }, { key: "enemy-3-2" }],
       frameRate: 2,
       repeat: -1,
     });
 
     scene.anims.create({
       key: "turret-1_anim",
-      frames: [
-        { key: "turret-1-1" },
-        { key: "turret-1-2" },
-      ],
+      frames: [{ key: "turret-1-1" }, { key: "turret-1-2" }],
       frameRate: 2,
       repeat: -1,
     });
 
     scene.anims.create({
       key: "turret-2_anim",
-      frames: [
-        { key: "turret-2-1" },
-        { key: "turret-2-2" },
-      ],
+      frames: [{ key: "turret-2-1" }, { key: "turret-2-2" }],
       frameRate: 2,
       repeat: -1,
     });
 
     scene.anims.create({
       key: "turret-3_anim",
-      frames: [
-        { key: "turret-3-1" },
-        { key: "turret-3-2" },
-      ],
+      frames: [{ key: "turret-3-1" }, { key: "turret-3-2" }],
       frameRate: 2,
       repeat: -1,
     });

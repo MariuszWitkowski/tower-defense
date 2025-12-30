@@ -12,13 +12,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
   }
 
-  public fire(
-    x: number,
-    y: number,
-    angle: number,
-    damage: number,
-    turretType: TurretType,
-  ) {
+  public fire(x: number, y: number, angle: number, damage: number, turretType: TurretType) {
     this.setPosition(x, y);
     this.setActive(true);
     this.setVisible(true);
@@ -26,11 +20,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.turretType = turretType;
 
     // Physics magic: velocity based on angle
-    this.scene.physics.velocityFromRotation(
-      angle,
-      BULLET_SPEED,
-      this.body!.velocity,
-    );
+    this.scene.physics.velocityFromRotation(angle, BULLET_SPEED, this.body!.velocity);
   }
 
   update(_time: number, _delta: number) {

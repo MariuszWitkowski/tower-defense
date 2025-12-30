@@ -1,7 +1,7 @@
 {
   "name": "my-llm-tower-defense",
-  "private": true,
   "version": "0.0.1",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,12 @@
     "test": "vitest run --pool=forks --passWithNoTests",
     "lint": "oxlint .",
     "format": "oxfmt ."
+  },
+  "dependencies": {
+    "phaser": "^3.90.0",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
@@ -22,11 +28,5 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.0",
     "vitest": "^4.0.16"
-  },
-  "dependencies": {
-    "phaser": "^3.90.0",
-    "reflect-metadata": "^0.2.2",
-    "tsyringe": "^4.10.0",
-    "zustand": "^5.0.9"
   }
 }

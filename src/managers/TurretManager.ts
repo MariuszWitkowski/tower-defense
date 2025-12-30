@@ -28,14 +28,7 @@ export default class TurretManager {
   }
 
   public placeTurret(x: number, y: number, turretType: TurretType) {
-    const turret = new Turret(
-      this.scene,
-      x,
-      y,
-      this.enemies,
-      this.bullets,
-      turretType,
-    );
+    const turret = new Turret(this.scene, x, y, this.enemies, this.bullets, turretType);
     turret.initialize();
     this.turrets.add(turret);
   }

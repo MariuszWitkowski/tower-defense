@@ -46,7 +46,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
 
   public initialize() {
     this.scene.add.existing(this);
-    this.anims.play({ key: `${this.turretType}_anim` });
+    this.anims.play(`${this.turretType}_anim`);
   }
 
   update(time: number, _delta: number) {
@@ -83,12 +83,7 @@ export default class Turret extends Phaser.GameObjects.Sprite {
     this.enemies.getChildren().forEach((child) => {
       const enemy = child as Enemy;
       if (enemy.active) {
-        const dist = Phaser.Math.Distance.Between(
-          this.x,
-          this.y,
-          enemy.x,
-          enemy.y,
-        );
+        const dist = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
         if (dist < closestDistance) {
           closestDistance = dist;
           closestEnemy = enemy;
