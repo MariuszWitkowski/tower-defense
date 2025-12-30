@@ -26,7 +26,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.anims.play(`${texture}_anim`);
+    this.anims.play({ key: `${texture}_anim` });
 
     this.path = path;
     this.currentPointIndex = 0;
