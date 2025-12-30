@@ -1,6 +1,6 @@
 # My LLM Tower Defense
 
-A tower defense game built with Phaser, TypeScript, and Vite.
+A tower defense game built with Phaser, TypeScript, and Vite, using Bun as the package manager.
 
 ## Getting Started
 
@@ -8,9 +8,9 @@ To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-- npm
+- Bun
   ```sh
-  npm install npm@latest -g
+  curl -fsSL https://bun.sh/install | bash
   ```
 
 ### Installation
@@ -19,42 +19,54 @@ To get a local copy up and running, follow these simple steps.
    ```sh
    git clone https://github.com/your_username_/my-llm-tower-defense.git
    ```
-2. Install NPM packages
+2. Install dependencies
    ```sh
-   npm install
+   bun install
    ```
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm run dev`
+### `bun dev`
 
-Runs the app in the development mode.
+Runs the app in development mode.
 Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
-### `npm run build`
+### `bun build`
 
 Builds the app for production to the `dist` folder.
 
-### `npm run preview`
+### `bun preview`
 
 Serves the production build locally.
 
-### `npm run test`
+### `bun test`
 
-Launches the test runner in the interactive watch mode.
+Launches the test runner.
 
-### `npm run lint`
+### `bun run lint`
 
 Lints the code using Oxc.
 
-### `npm run format`
+### `bun run format`
 
 Formats the code using Oxc.
 
+## Testing
+
+This project has a continuous integration (CI) pipeline that runs on every pull request to the `main` branch. The CI process, defined in `.github/workflows/pr-validation.yml`, performs the following checks to ensure code quality and correctness:
+
+1.  **Install Dependencies:** Runs `bun install` to ensure all required packages are present.
+2.  **Lint:** Runs `bun run lint` to check for code style issues.
+3.  **Test:** Runs `bun test` to execute the unit test suite.
+4.  **Build:** Runs `bun run build` to ensure the project builds successfully.
+
+All checks must pass before a pull request can be merged.
+
 ## Technologies Used
 
+- [Bun](https://bun.sh/) - An all-in-one JavaScript runtime, bundler, transpiler, and package manager.
 - [Phaser](https://phaser.io/) - A fast, free, and fun open source HTML5 game framework.
 - [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript that compiles to plain JavaScript.
 - [Vite](https://vitejs.dev/) - A modern frontend build tool.
