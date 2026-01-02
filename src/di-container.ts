@@ -6,12 +6,8 @@ import WaveManager from "./managers/WaveManager";
 import UIManager from "./managers/UIManager";
 import GameManager from "./managers/GameManager";
 import AssetsManager from "./managers/AssetsManager";
-import ErrorHandler from "./managers/ErrorHandler";
-import ErrorDisplay from "./managers/ErrorDisplay";
 
 container.registerSingleton("AssetsManager", AssetsManager);
-container.registerSingleton("ErrorDisplay", ErrorDisplay);
-container.registerSingleton("ErrorHandler", ErrorHandler);
 container.registerSingleton("GridManager", GridManager);
 container.registerSingleton("LevelManager", LevelManager);
 container.registerSingleton("TurretManager", TurretManager);
