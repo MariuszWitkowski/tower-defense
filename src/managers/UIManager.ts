@@ -2,16 +2,12 @@ import Phaser from "phaser";
 import Turret from "../entities/Turret";
 import { TURRET_UPGRADE_COST } from "../utils/Constants";
 import { useGameStore } from "../state/gameStore";
-import { injectable, inject } from "tsyringe";
+import { injectable } from "tsyringe";
 import { TurretType } from "../utils/TurretType";
-import ErrorHandler from "./ErrorHandler";
 
 @injectable()
 export default class UIManager {
   private scene!: Phaser.Scene;
-  private errorHandler!: ErrorHandler;
-  private errorIcon!: Phaser.GameObjects.Text;
-  private errorPopup!: Phaser.GameObjects.Container;
   private moneyText!: Phaser.GameObjects.Text;
   private livesText!: Phaser.GameObjects.Text;
   private levelText!: Phaser.GameObjects.Text;
@@ -31,9 +27,7 @@ export default class UIManager {
   private nextLevelCallback!: () => void;
   private startLevelCallback!: () => void;
 
-  constructor(@inject("ErrorHandler") errorHandler: ErrorHandler) {
-    this.errorHandler = errorHandler;
-  }
+  constructor() {}
 
   public setScene(
     scene: Phaser.Scene,
@@ -50,7 +44,6 @@ export default class UIManager {
     this.createTurretSelectionUI();
     this.createNewLevelButton();
     this.createStartLevelButton();
-    this.createErrorUI();
 
     useGameStore.subscribe((state) => {
       this.moneyText.setText(`Money: $${state.money}`);
@@ -236,61 +229,6 @@ export default class UIManager {
 
   public getSelectedTurretType(): TurretType {
     return this.selectedTurretType;
-  }
-
-  private createErrorUI() {
-    this.errorIcon = this.scene.add
-      .text(770, 570, "\uD83D\uDC1E", { fontSize: "30px" })
-      .setInteractive()
-      .setVisible(false);
-
-    this.errorPopup = this.scene.add.container(100, 100).setVisible(false);
-    const background = this.scene.add.graphics();
-    background.fillStyle(0x000000, 0.8);
-    background.fillRect(0, 0, 600, 400);
-    this.errorPopup.add(background);
-
-    const errorText = this.scene.add.text(10, 10, "", {
-      fontSize: "16px",
-      color: "#ffffff",
-      wordWrap: { width: 580 },
-    });
-    this.errorPopup.add(errorText);
-
-    const closeButton = this.scene.add
-      .text(590, 10, "X", { fontSize: "20px", color: "#ffffff" })
-      .setInteractive()
-      .setOrigin(1, 0);
-    this.errorPopup.add(closeButton);
-
-    const copyButton = this.scene.add
-      .text(500, 370, "Copy", { fontSize: "20px", color: "#ffffff" })
-      .setInteractive();
-    this.errorPopup.add(copyButton);
-
-    this.errorIcon.on("pointerdown", () => {
-      errorText.setText(this.getFormattedErrors());
-      this.errorPopup.setVisible(true);
-    });
-
-    closeButton.on("pointerdown", () => {
-      this.errorPopup.setVisible(false);
-    });
-
-    copyButton.on("pointerdown", () => {
-      navigator.clipboard.writeText(this.getFormattedErrors());
-    });
-  }
-
-  private getFormattedErrors(): string {
-    const errors = this.errorHandler.getErrors();
-    return errors.map((e) => `${e.message}\n${e.stack}`).join("\n\n");
-  }
-
-  public update() {
-    if (this.errorHandler.getErrors().length > 0) {
-      this.errorIcon.setVisible(true);
-    }
   }
 
   public showGameOver() {
