@@ -2,8 +2,9 @@ import Phaser from "phaser";
 import Turret from "../entities/Turret";
 import { TURRET_UPGRADE_COST } from "../utils/Constants";
 import { useGameStore } from "../state/gameStore";
-import { injectable } from "tsyringe";
+import { injectable, inject } from "tsyringe";
 import { TurretType } from "../utils/TurretType";
+import { LeaderboardManager } from "./LeaderboardManager";
 
 @injectable()
 export default class UIManager {
@@ -27,7 +28,7 @@ export default class UIManager {
   private nextLevelCallback!: () => void;
   private startLevelCallback!: () => void;
 
-  constructor() {}
+  constructor(@inject("LeaderboardManager") private leaderboardManager: LeaderboardManager) {}
 
   public setScene(
     scene: Phaser.Scene,
@@ -36,6 +37,7 @@ export default class UIManager {
     startLevelCallback: () => void,
   ) {
     this.scene = scene;
+    this.leaderboardManager.setScene(scene);
     this.upgradeTurretCallback = upgradeTurretCallback;
     this.nextLevelCallback = nextLevelCallback;
     this.startLevelCallback = startLevelCallback;
@@ -66,6 +68,14 @@ export default class UIManager {
 
     this.livesText = this.scene.add.text(790, 10, "Lives: 0", style).setOrigin(1, 0);
     this.waveText = this.scene.add.text(790, 40, "Wave: 1", style).setOrigin(1, 0);
+
+    const leaderboardButton = this.scene.add
+      .text(400, 10, "Leaderboard", style)
+      .setOrigin(0.5, 0)
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.leaderboardManager.showLeaderboard();
+      });
   }
 
   private createTurretUI() {
@@ -164,7 +174,7 @@ export default class UIManager {
     this.newLevelButton.setVisible(true);
   }
 
-  public hideNewLevelButton() {
+  public hideNewLevelButton() {.
     this.newLevelButton.setVisible(false);
   }
 
@@ -232,13 +242,45 @@ export default class UIManager {
   }
 
   public showGameOver() {
-    this.scene.add
-      .text(400, 300, "Game Over", {
-        font: "48px Arial",
+    const gameOverContainer = this.scene.add.container(400, 300);
+
+    const background = this.scene.add.rectangle(0, 0, 300, 200, 0x000000, 0.8).setOrigin(0.5);
+    gameOverContainer.add(background);
+
+    const gameOverText = this.scene.add
+      .text(0, -50, "Game Over", {
+        font: "32px Arial",
         color: "#ff0000",
-        backgroundColor: "#000000",
-        padding: { x: 20, y: 10 },
       })
       .setOrigin(0.5);
+    gameOverContainer.add(gameOverText);
+
+    const nameInput = this.scene.add
+      .dom(0, 20)
+      .createFromHTML(
+        '<input type="text" id="nameInput" placeholder="Enter your name" style="width: 200px; padding: 10px; font-size: 16px;">',
+      )
+      .setOrigin(0.5);
+    gameOverContainer.add(nameInput);
+
+    const submitButton = this.scene.add
+      .text(0, 80, "Submit", {
+        font: "24px Arial",
+        color: "#00ff00",
+        backgroundColor: "#333333",
+        padding: { x: 10, y: 5 },
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on("pointerdown", () => {
+        const name = (document.getElementById("nameInput") as HTMLInputElement).value;
+        if (name) {
+          const { money } = useGameStore.getState();
+          this.leaderboardManager.saveScore(name, money);
+          gameOverContainer.destroy();
+          this.leaderboardManager.showLeaderboard();
+        }
+      });
+    gameOverContainer.add(submitButton);
   }
 }

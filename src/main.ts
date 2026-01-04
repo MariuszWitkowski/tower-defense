@@ -15,6 +15,9 @@ const config: Phaser.Types.Core.GameConfig = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   parent: "app", // The ID of the HTML div where the game lives
+  dom: {
+    createContainer: true,
+  },
   physics: {
     default: "arcade",
     arcade: {
