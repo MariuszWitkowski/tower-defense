@@ -70,7 +70,7 @@ export default class UIManager {
     this.waveText = this.scene.add.text(790, 40, "Wave: 1", style).setOrigin(1, 0);
 
     const leaderboardButton = this.scene.add
-      .text(400, 10, "Leaderboard", style)
+      .text(400, 570, "Leaderboard", style)
       .setOrigin(0.5, 0)
       .setInteractive()
       .on("pointerdown", () => {
@@ -79,7 +79,7 @@ export default class UIManager {
   }
 
   private createTurretUI() {
-    this.turretUIContainer = this.scene.add.container(10, 100);
+    this.turretUIContainer = this.scene.add.container(10, 400);
     this.turretUIContainer.setVisible(false);
 
     const background = this.scene.add.rectangle(0, 0, 180, 150, 0x000000, 0.7).setOrigin(0);
@@ -187,7 +187,7 @@ export default class UIManager {
   }
 
   private createTurretSelectionUI() {
-    const turretSelectionContainer = this.scene.add.container(10, 300);
+    const turretSelectionContainer = this.scene.add.container(10, 450);
 
     this.quickTurretButton = this.scene.add
       .text(0, 0, "Build Quick Turret")
