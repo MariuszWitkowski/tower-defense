@@ -69,7 +69,7 @@ export default class UIManager {
     this.livesText = this.scene.add.text(790, 10, "Lives: 0", style).setOrigin(1, 0);
     this.waveText = this.scene.add.text(790, 40, "Wave: 1", style).setOrigin(1, 0);
 
-    const leaderboardButton = this.scene.add
+    const _leaderboardButton = this.scene.add
       .text(400, 570, "Leaderboard", style)
       .setOrigin(0.5, 0)
       .setInteractive()
@@ -174,7 +174,7 @@ export default class UIManager {
     this.newLevelButton.setVisible(true);
   }
 
-  public hideNewLevelButton() {.
+  public hideNewLevelButton() {
     this.newLevelButton.setVisible(false);
   }
 
