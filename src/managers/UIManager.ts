@@ -174,7 +174,7 @@ export default class UIManager {
     this.newLevelButton.setVisible(true);
   }
 
-  public hideNewLevelButton() {.
+  public hideNewLevelButton() {
     this.newLevelButton.setVisible(false);
   }
 
